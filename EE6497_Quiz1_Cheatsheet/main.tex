@@ -1,0 +1,1157 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,top=1pt,bottom=2pt,left=1pt,right=1pt,marginparwidth=1pt,headheight=1pt]{geometry}
+
+\input{preamble.tex}
+
+\usepackage{blindtext}
+\usepackage{multicol}
+\usepackage{color}
+\setlength{\columnsep}{0.2cm}
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{blue}}
+
+\usepackage{xpatch}
+\xpatchcmd{\NCC@ignorepar}{%
+\abovedisplayskip\abovedisplayshortskip}
+{%
+\abovedisplayskip\abovedisplayshortskip%
+\belowdisplayskip\belowdisplayshortskip}
+{}{}
+
+\setlength{\parindent}{0in}
+\setlength{\parskip}{0in}
+
+\setlength{\belowdisplayskip}{0pt} \setlength{\belowdisplayshortskip}{0pt}
+\setlength{\abovedisplayskip}{0pt} \setlength{\abovedisplayshortskip}{0pt}
+
+
+
+\usepackage{soul}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\bulletPoint}[1]{\ul{\textit{\textbf{#1}}}}
+
+
+
+% For better text align
+\usepackage{ragged2e}
+
+
+
+\begin{document}
+\singlespacing
+\begin{multicols*}{4}
+\tiny
+\raggedright
+% \bulletPoint{Law of Total Probability}:
+% Let $A_1, A_2, A_3, \cdots$ be events that partition $\Omega$, i.e., disjoint ($A_i \cap A_j = \varnothing$ for $i\neq j$) and $\bigcup^{n}_{i=1} A_i = \Omega$. Then for event $B$:
+
+% \useshortskip \begin{equation*}
+%     P(B) = \sum_{i=1} P(A_i \cap B)
+% \end{equation*}
+\bulletPoint{Bayes Rule}:
+Bayes rule also applies to a countably infinite number of events.
+\useshortskip \begin{equation*}
+    P(A_j | B) = \frac{P(B | A_j)}{\sum^{n}_{i=1}P(A_i)P(B | A_i)} P(A_j)
+\end{equation*}
+
+
+% \bulletPoint{Random Variable}:
+% Random variable is actually a real-valued function $X(\omega)$ over a sample space $\Omega$. We use upper case letters for random variables, and lower case letters for values of random variables.
+% We use $X \sim p_X(x)$ or simply $X \sim p(x)$ to mean that the discrete random variable X has pmf $p_X(x)$ or $p(x)$.
+
+\bulletPoint{Bernoulli Probability}:
+$X \sim Bern(\theta), \; 0 \leq \theta \leq 1$. 
+\useshortskip \begin{equation*}
+    p_X(x)=\theta^x(1-\theta)^{1-x}, \quad x\in\{0,1\}
+\end{equation*}
+$E(X)=\theta,\; Var(X)=\theta(1-\theta)$
+
+
+\bulletPoint{Geometric Distribution}:
+$X \sim Geom(p)$ for $0 \leq p \leq 1$ has pmf below. $E(X)=\frac{1}{p}, Var(X)=\frac{1-p}{p^2}$
+\useshortskip \begin{equation*}
+    p_X(k) = p(1-p)^{k-1}, \; \text{for} \; k=1,2,\cdots
+\end{equation*}
+% The Geometric r.v. represents, for example, the number of coin flips until the first heads shows up.
+\bulletPoint{Binomial Distribution}:
+$X \sim Binom(n, p)$ for  integer $n\geq 0$ and $0 \leq p \leq 1$ has the below pmf. $E(X)=np, Var(X)=np(1-p)$
+\useshortskip \begin{equation*}
+\begin{split}
+        p_X(k) = \frac{n!}{k!(n-k!)} p^k (1-p)^{n-k} \\
+        \text{for} \; k=0,1,2,\cdots
+\end{split}
+\end{equation*}
+with the maximum of $p_X(k)$ is obtained at $k=(n+1)p$. The binomial r.v. represents, for example, the number of heads in \textit{n} independent coin flips.
+
+
+\bulletPoint{Poisson Distribution}: 
+If the average number of packets arriving per unit time is $\lambda$, the probability of $k (k=1,2,\cdots)$ packages arrive within (0, T] can be calculated as the equation below. $E(X)=\lambda T, Var(X)=\lambda T$
+\useshortskip \begin{equation*}
+    P({k}) = \frac{(\lambda T)^k}{k!} e^{-\lambda T}
+\end{equation*}
+Poisson is the limit of Binomial when $p \propto \frac{\lambda}{n}$ has $n \rightarrow \infty$.
+
+
+\bulletPoint{Uniform Distribution}
+$X \sim U[a, b]$ where $a < b$ has pdf: $f_X(x) = \frac{1}{b-a}$ if $a \leq x \leq b$ and 0 for otherwise. $E(X)=\frac{a+b}{2}, Var(X)=\frac{(b-a)^2}{12}$.The uniform r.v. is commonly used in modeling quantization noise and finite precision computation error.
+
+
+\bulletPoint{Exponential Distribution}
+$X \sim Exp(\lambda)$ where $\lambda > 0$ has pdf: $f_X(x) = \lambda e^{-\lambda x}$ if $x \geq 0$ and 0 for otherwise. $E(X)=\frac{1}{\lambda}, Var(X)=\frac{1}{\lambda^2}$.The exponential r.v. represents interarrival time in a queue (time between two consecutive packet or customer arrivals) or service time in a queue or particle lifetime. The exponential r.v. is memoryless.
+
+\bulletPoint{Gaussian Distribtion}
+$X \sim \mathcal{N}(\mu,\,\sigma^{2})$ has pdf with parameter $\mu$ (mean) and $\sigma ^2$ (variance) shown as below. $E(X)=\mu, Var(X)=\sigma^2$.
+\useshortskip \begin{equation*}
+    f(x)=\frac{1}{\sigma\sqrt{2\pi}}\exp{[-\frac{(x-\mu)^{2}}{2\sigma^{2}}]}
+\end{equation*}
+
+\bulletPoint{Beta Distribution}:
+$\theta\sim \mathrm{Beta}(\alpha,\beta),\; \alpha,\beta>0,\; \theta\in(0,1)$.
+\useshortskip \begin{equation*}
+    \begin{split}
+           f(\theta)=\frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta)}, \\
+    B(\alpha,\beta)=\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)} 
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+\begin{split}
+        E[\theta]=\frac{\alpha}{\alpha+\beta}, \\
+    \mathrm{Var}(\theta)=\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}
+\end{split}
+\end{equation*}
+Conjugate prior for Bernoulli/Binomial.
+
+\bulletPoint{Conditional CDF and PDF}:
+
+CDF: Find $F_{Y|X}(y | X=x) = P\{ Y\leq y | X=x\}$
+\useshortskip \begin{equation*}
+    \begin{split}
+        & F_{Y|X}(y|x) \\
+        = & \lim_{\Delta x \rightarrow 0}P\{ Y \leq y | x < X \leq x+\Delta x \} \\
+        = & \lim_{\Delta x \rightarrow 0} \frac{P\{ Y \leq y , x < X \leq x+\Delta x \}}{P\{ x < X \leq x+\Delta x \}}\\
+        & \text{Assume $f_X(x)$ is constant within $\Delta x$}\\
+        & P(x \in [x, x+\Delta x]) = f_X(x) \Delta x\\
+        = & \lim_{\Delta x \rightarrow 0} \frac{\int^y_{- \infty} f_{X,Y}(x,u)du \Delta x}{f_X(x)\Delta x}\\
+        = & \int^y_{- \infty} \frac{f_{X,Y}(x,u)}{f_X(x)} du
+    \end{split}     
+\end{equation*}
+
+
+\bulletPoint{Proproties of expection}:\\
+$E(const) = const$; \\
+$E[ag_1(X) + g_2(X)] = a E(g_1(X)) + E(g_2(X))$
+
+
+\bulletPoint{Mean}:
+$E(X) = \int^{\infty}_{-\infty}xf_X(x)dx, \; E(X^2) = \int^{\infty}_{-\infty}x^2f_X(x)dx$
+
+
+\bulletPoint{Variance}:$Var(X) = E[(X - E(X))^2] = E(X^2) - (E(X))^2 \geq 0$; $Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$
+
+
+
+% \bulletPoint{Expection involving two RVs}
+% $E(g(X, Y)) = \int^\infty_{-\infty}\int^\infty_{-\infty}g(x,y)f_{X,Y}(x,y)dxdy$. $g(X, Y)$ may be $X, Y, X^2, X+Y$, etc.
+
+\bulletPoint{Correlation}: $E(XY) = \int^\infty_{-\infty}\int^\infty_{-\infty}xyf_{X,Y}(x,y)dxdy$.
+\bulletPoint{Correlation Coefficient}: $\rho_{X,Y} = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}$. $|\rho_{X,Y}| \leq 1$.
+
+
+\bulletPoint{Covariance}: $Cov(X, Y) = E[(X - E(X))(Y - E(Y))] = E(XY) - E(X)E(Y)$ $X$ and $Y$ are said to be uncorrelated if $Cov(X,Y)=0$. 
+
+
+\bulletPoint{Conditioning on an event}: Let $X \sim p_X(x)$ be a r.v, and $A$ be a nonzero probability event. $p_{X|A}(x) = \frac{p_X(x)}{P\{ X \in A\}}$ or $f_{X|A}(x) = \frac{f_X(x)}{P\{ X \in A\}}$,  if $x \in A$, and 0 for other wise. $\sum_{x \in A}f_{X|A}(x)=1$. It defines a new probability distribution that only focuses on \textit{A}. 
+
+
+\bulletPoint{Conditional Expectation on an event}: $E(g(X)|A) = \int^\infty_{-\infty}g(x)f_{X|A}(x)dx$
+
+
+\bulletPoint{Total Expectation Theorem}: Let $X \sim f_X(x)$ and $A_1, A_2, \cdot, A_n$ be disjoint nonzero probability events with $P(\cup^n_{i=1}A_i) = \sum^n_{i=1}P(A_i)=1$. Then: $E(g(X)) = \sum^n_{i=1}P\{ X \in A_i \} E(g(X)|A_i)$. 
+% This theorem said: find the mean of each part in a combined distribution, and them sum them up to get the whole expectation of the total distribution.
+
+
+\bulletPoint{Conditional Expectation on a random variable}: 
+$E[X|Y=y]=\int_{-\infty}^{\infty}x\,p(x|y)\,dx$
+$E(g(X, Y)|Y=y) = \int^\infty_{-\infty}g(x,y)f_{X|Y}(x|y)dx$
+$E[f(X)g(Y)\mid Y=y]=E[f(X)\mid Y=y]\,g(y)$
+
+
+\bulletPoint{Iterated Expectation}: $E_Y\{ E_X(g(X,Y)|Y)\} = E_{X,Y}(g(X, Y))$
+
+
+\bulletPoint{Conditional Variance}: $Var(X|Y=y) = E[(X-E(X|Y))^2|Y] = E(X^2|Y=y) - [E(X|Y=y)]^2$
+
+
+\bulletPoint{Law of Conditional Variances}: $Var(X) = E_Y(Var(X|Y)) + Var(E(X|Y)) = \text{bias} + \text{Variance}$
+
+
+\bulletPoint{Properties of Jointly Gaussian Random Variables}:
+\useshortskip \begin{equation*}
+    \begin{split}
+        X&\sim\mathcal{N}(\mu,\sigma^2)\ \Rightarrow\\
+        aX&\sim\mathcal{N}(a\mu,a^2\sigma^2),\\
+        X+c&\sim\mathcal{N}(\mu+c,\sigma^2)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    Z\sim\mathcal{N}(0,1),\quad
+    X=\sigma Z+\mu\sim\mathcal{N}(\mu,\sigma^2)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        Z&=[Z_1,\ldots,Z_K]^T,\ 
+        Z_i\overset{i.i.d.}{\sim}\mathcal{N}(0,1),\\
+        X&=AZ+\mu
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        E[X]&=E[AZ+\mu]=AE[Z]+\mu=\mu,\\
+        \mathrm{cov}(X)&=A\,E[ZZ^T]\,A^T=AA^T
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        X&\sim\mathcal{N}(\mu,\sigma^2),\ 
+        Y\sim\mathcal{N}(\xi,\nu^2),\ X\perp Y\\
+        \Rightarrow\ X+Y&\sim\mathcal{N}(\mu+\xi,\sigma^2+\nu^2)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \rho_{X,Y}=0\ \Rightarrow\ X\perp Y\quad(\text{joint Gaussian})
+\end{equation*}
+\useshortskip \begin{equation*}
+\begin{split}
+ X|\{Y=y\} \sim \mathbb{N}&\left( \rho_{X,Y}\sigma_X\frac{y-\mu_Y}{\sigma_Y}+\mu_X,\right.\\
+&\left. (1-\rho^2_{X,Y})\sigma^2_X ) \right)\\[-8pt]
+\end{split}
+\end{equation*}
+
+
+\bulletPoint{Random Vectors}:
+\useshortskip \begin{equation*}
+    \begin{split}
+        & CDF: F_X(\Vec{x}) = P\{X_1 \leq x_1, \cdots, X_n \leq x_n\}\\
+        & PDF: f_X(\Vec{x}) = f_{X_1, \ldots, X_n}(x_1, \ldots, x_n)\\
+        & Marginals: \\
+        & F_{X_1}(x_1) = \lim_{x_2, x_3 \rightarrow \infty}F_{X}(x_1, x_2, x_3)\\
+        & f_{X_1}(x_1) = \int^\infty_{-\infty}f_{X_1,X_2}(x_1,x_2)dx_2\\
+        & Chain rule: f_X(\Vec{x}) = f_{X_1}(x_1)\cdot\\
+        & f_{X_2|X_1}(x_1|x_1)f_{X_3|X_1,X_1}(x_3|x_1, x_2)\cdots
+    \end{split}
+\end{equation*}
+
+
+
+\bulletPoint{Mean and Covariance Matrix of random vector}:
+\useshortskip\begin{equation*}
+    \begin{split}
+        & E(X) = [E(X_1), E(X_2), \cdots, E(X_n)]^T\\
+        & Cov(X) = \Sigma_X = 
+        \begin{bmatrix}
+        \sigma_{11} & \sigma_{12} & \cdots & \sigma_{1n}\\
+        \vdots & \vdots & \vdots & \vdots \\
+        \sigma_{n1} & \sigma_{n2} & \cdots & \sigma_{nn}\\
+        \end{bmatrix}\\
+        & = E[(X-E_X)\cdot(X-E_X)^T]
+    \end{split}
+\end{equation*}
+
+$\Sigma_X$ is real, symmetric, and non-negative definite, i.e. $a^T\Sigma_Xa \geq 0, \forall a$ or $|\Sigma_X| \geq 0$.
+
+
+\bulletPoint{Gaussian Random Vectors (GRV)}:
+A random vector X is a GRV if the joint pdf is of the form:
+\useshortskip \begin{equation*}
+    \begin{split}
+        f_X(x) = & \frac{1}{(2\pi)^{\frac{n}{2}}|\Sigma|^{\frac{1}{2}}}\cdot\\
+        & \exp{-\frac{1}{2}(x-\Vec{\mu})^T\Sigma^{-1}(x-\Vec{\mu})}
+    \end{split}
+\end{equation*}
+
+
+\bulletPoint{Properties of GRVs}:
+1. For a GRV, uncorrelation implies independence.
+
+2. Linear transformation of a GRV yields a GRV. I.e., given any $m \times n$ matrix A, where $m \leq n$, and A has full rank $m$, then: $\mathbb{Y} = A\mathbb{X} \sim \mathbb{N}(A\mathbb{\mu}, A\Sigma A^T)$
+
+3. Mariginals of a GRV are Gaussian. I.e., if X is GRV, for any subset $\{i_1, \ldots, i_k\} \subset \{1, \ldots, n\}$ of indices, the RV: $\mathbb{Y}=[X_{i1}, X_{i2}, \ldots, X_{ik}]^T$ is a GRV.
+
+4. Conditionals of a GRV are Gaussian, if
+\useshortskip\begin{equation*}
+\begin{split}
+& \mathbf{X}=\left[\begin{array}{c}
+\mathbf{X}_1 \\
+-- \\
+\mathbf{X}_2
+\end{array}\right] \sim \\
+& \mathcal{N}\left(\left[\begin{array}{c}
+\mu_1 \\
+-- \\
+\mu_2
+\end{array}\right],\left[\begin{array}{c|c}
+\Sigma_{11} & \Sigma_{12} \\
+-- & -- \\
+\Sigma_{21} & \Sigma_{22}
+\end{array}\right]\right)
+\end{split}
+\end{equation*}
+
+Then,  $\mathbb{X}_2|\{\mathbb{X}_1=x\} \sim \mathbf{N}(\Sigma_{21}\Sigma^{-1}_{11}(x-\mu_1)+\mu_2, \Sigma_{22}-\Sigma_{21}\Sigma^{-1}_{11}\Sigma_{12})$
+
+5. If $[\mathbb{Y}^T X]^T$ is a GRV, then the best MSE estimate of X given Y is linear.
+
+
+\bulletPoint{i.i.d. Dataset Likelihood}:
+For $\mathcal{D}=\{x_1,\ldots,x_n\}$ i.i.d., $x_i\sim Bern(\theta)$:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\theta\mid\mathcal{D}) &\propto p(\mathcal{D}\mid\theta)p(\theta) \\
+        &\propto \left(\prod_{i=1}^{n}\theta^{x_i}(1-\theta)^{1-x_i}\right) \\
+        &\quad \cdot \theta^{a-1}(1-\theta)^{b-1}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \theta\mid\mathcal{D}
+        &\sim \mathrm{Beta}\!\left(\sum_{i=1}^{n}x_i+a,\right.\\
+        &\left.\qquad n-\sum_{i=1}^{n}x_i+b\right)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \log p(\mathcal{D}\mid\theta)
+        &=\sum_{i=1}^{n}\log p(x_i\mid\theta) \\
+        &=\sum_{i=1}^{n}\big[x_i\log\theta \\
+        &\qquad +(1-x_i)\log(1-\theta)\big]
+    \end{split}
+\end{equation*}
+Categorical example:
+\useshortskip \begin{equation*}
+    \begin{split}
+        X &\sim \mathrm{Cat}(\theta_1,\ldots,\theta_K), \\
+        &\theta_k\ge 0,\ \sum_{k=1}^{K}\theta_k=1,\ 
+        p(x=k)=\theta_k
+    \end{split}
+\end{equation*}
+For $x_i \stackrel{iid}{\sim}\mathrm{Cat}(\theta_1,\ldots,\theta_K)$:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathcal{D}\mid\theta)
+        &=\prod_{i=1}^{n}p(x_i\mid\theta) \\
+        &=\prod_{i=1}^{n}\prod_{k=1}^{K}\theta_k^{\mathbf{1}\{x_i=k\}} \\
+        &=\prod_{k=1}^{K}\theta_k^{N_k},
+        \quad N_k=\sum_{i=1}^{n}\mathbf{1}\{x_i=k\}
+    \end{split}
+\end{equation*}
+
+\bulletPoint{MLE}:
+Bernoulli Distribution: for $\mathcal{D}=\{x_1,\ldots,x_n\}$,
+$x_i\sim Bern(\theta)$ i.i.d., $\theta\in[0,1]$.
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathcal{D}\mid\theta)&=\theta^{N_1}(1-\theta)^{N_0},\\
+        N_k&=\sum_{i=1}^{n}\mathbf{1}\{x_i=k\},\quad k\in\{0,1\}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \log p(\mathcal{D}\mid\theta)=N_1\log\theta+N_0\log(1-\theta)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{N_1}{\theta_{ML}}=\frac{N_0}{1-\theta_{ML}}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \theta_{ML}=\frac{N_1}{N_0+N_1}=\frac{N_1}{n}
+\end{equation*}
+Exponential Distribution: for $\mathcal{D}=\{x_1,\ldots,x_n\}$,
+$x_i\sim Exp(\lambda)$ i.i.d., $\lambda>0$.
+\useshortskip \begin{equation*}
+    p(\mathcal{D}\mid\lambda)
+    =\lambda^{n}\exp\!\left(-\lambda\sum_{i=1}^{n}x_i\right)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \log p(\mathcal{D}\mid\lambda)
+    =n\log\lambda-\lambda\sum_{i=1}^{n}x_i
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{n}{\lambda_{ML}}=\sum_{i=1}^{n}x_i
+\end{equation*}
+\useshortskip \begin{equation*}
+    \lambda_{ML}=\frac{n}{\sum_{i=1}^{n}x_i}
+\end{equation*}
+Gaussian Distribution: for $\mathcal{D}=\{x_1,\ldots,x_n\}$,
+$x_i\sim \mathcal{N}(\mu,\sigma^2)$ i.i.d., $\theta=(\mu,\sigma^2)$.
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathcal{D}\mid\theta)
+        &=\frac{1}{(2\pi)^{n/2}\sigma^{n}} \\
+        &\quad \cdot \exp\!\left(
+        -\frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2
+        \right)
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Linear Regression MLE}:
+\useshortskip \begin{equation*}
+    \begin{split}
+        y_i=\mathbf{w}^T\phi(\mathbf{x}_i)+\epsilon_i, \epsilon_i\sim\mathcal{N}(0,\sigma^2)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(y_i\mid \mathbf{x}_i,\mathbf{w})=\mathcal{N}\!\left(
+        y_i\mid \mathbf{w}^T\phi(\mathbf{x}_i),\sigma^2\right)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \Phi&=
+        \begin{bmatrix}
+            \phi(\mathbf{x}_1)^T\\
+            \vdots\\
+            \phi(\mathbf{x}_n)^T
+        \end{bmatrix},\\
+        \mathbf{y}&=[y_1,\ldots,y_n]^T
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        &\log p(\mathbf{y}\mid \Phi,\mathbf{w})
+        =\sum_{i=1}^{n}\log \mathcal{N}\!\left(
+        y_i\mid \mathbf{w}^T\phi(\mathbf{x}_i),\sigma^2\right) \\
+        &=-\frac{1}{2\sigma^2}\sum_{i=1}^{n}
+        \left(y_i-\mathbf{w}^T\phi(\mathbf{x}_i)\right)^2+\mathrm{const} \\
+        &=-\frac{1}{2\sigma^2}\|\Phi\mathbf{w}-\mathbf{y}\|^2+\mathrm{const}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \mathbf{w}_{ML}
+    =\arg\min_{\mathbf{w}}\|\Phi\mathbf{w}-\mathbf{y}\|^2
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \Phi^T\Phi\,\mathbf{w}_{ML}&=\Phi^T\mathbf{y},\\
+        \mathbf{w}_{ML}&=(\Phi^T\Phi)^{-1}\Phi^T\mathbf{y}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \mathbf{x}&=[x_1,x_2]^T,\\
+        \phi(\mathbf{x})&=[1,x_1,x_2,x_1^2,x_2^2]^T
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Goodness of Fit}:
+\useshortskip \begin{equation*}
+    RSS=\sum_{i=1}^{n}(y_i-\hat{y}_i)^2,\qquad
+    RMSE=\sqrt{\frac{1}{n}RSS}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \bar{y}=\frac{1}{n}\sum_{i=1}^{n}y_i,\qquad
+    TSS=\sum_{i=1}^{n}(y_i-\bar{y})^2
+\end{equation*}
+\useshortskip \begin{equation*}
+    R^2=1-\frac{RSS}{TSS}
+    =1-\frac{RSS}{\sum_{i=1}^{n}(y_i-\bar{y})^2}
+\end{equation*}
+$R^2=0$ if $\hat{y}_i=\bar{y}$ for all $i$;\quad $R^2<0$ means worse than constant prediction.
+
+\bulletPoint{Parametric Models}:
+Assume $x\sim p(x\mid \theta)$ with parameter $\theta$.
+\useshortskip \begin{equation*}
+    \underbrace{p(\theta\mid x)}_{\text{posterior}}
+    =\frac{\underbrace{p(x\mid\theta)}_{\text{likelihood}}
+    \underbrace{p(\theta)}_{\text{prior}}}
+    {\underbrace{p(x)}_{\text{evidence}}}
+    \propto \underbrace{p(x\mid\theta)}_{\text{likelihood}}
+    \underbrace{p(\theta)}_{\text{prior}}
+\end{equation*}
+
+
+\bulletPoint{Conjugate Distribution}:
+Definition: a prior family is conjugate to a likelihood if the posterior stays in the same family as the prior.
+For $x\in\{0,1\}$, likelihood $p(x\mid\theta)=\theta^x(1-\theta)^{1-x}$ and prior $\theta\sim\mathrm{Beta}(a,b)$:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\theta\mid x) &\propto p(x\mid\theta)p(\theta) \\
+        &\propto \theta^x(1-\theta)^{1-x}\theta^{a-1}(1-\theta)^{b-1}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\theta\mid x) &\propto \theta^{x+a-1}(1-\theta)^{1-x+b-1} \\
+        \Rightarrow\ \theta\mid x &\sim \mathrm{Beta}(x+a,\,1-x+b)
+    \end{split}
+\end{equation*}
+Posterior is still Beta, so Beta is conjugate to Bernoulli.
+
+\bulletPoint{MAP}:
+\useshortskip \begin{equation*}
+    \theta_{MAP}=\arg\max_{\theta}\,p(\theta\mid\mathcal{D})
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\theta\mid\mathcal{D})
+        &\propto p(\mathcal{D}\mid\theta)p(\theta),\\
+        \log p(\theta\mid\mathcal{D})
+        &=\log p(\mathcal{D}\mid\theta)+\log p(\theta)+\mathrm{const}
+    \end{split}
+\end{equation*}
+Bernoulli-Beta example:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathcal{D}\mid\theta)&=\theta^{N_1}(1-\theta)^{N_0},\\
+        p(\theta)&=\mathrm{Beta}(\theta\mid a,b)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \log\!\big(p(\mathcal{D}\mid\theta)p(\theta)\big)
+        &=(N_1+a-1)\log\theta\\
+        &\quad +(N_0+b-1)\log(1-\theta)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \frac{N_1+a-1}{\theta_{MAP}}
+        &=\frac{N_0+b-1}{1-\theta_{MAP}},\\
+        \theta_{MAP}
+        &=\frac{N_1+a-1}{n+a+b-2}
+    \end{split}
+\end{equation*}
+Classification (MAP rule):
+\useshortskip \begin{equation*}
+    \delta(\mathbf{x})=\arg\max_{k\in\{1,\ldots,K\}}p(y=k\mid \mathbf{x})
+\end{equation*}
+\useshortskip \begin{equation*}
+    P(\text{error}\mid\mathbf{x})
+    =1-p\!\left(y=\delta(\mathbf{x})\mid\mathbf{x}\right)
+\end{equation*}
+Naive Bayes:
+\useshortskip \begin{equation*}
+    p(\mathbf{x}\mid y=c,\theta)
+    =\prod_{d=1}^{D}p(x_d\mid \theta_{dc})
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(y=c\mid\mathbf{x},\theta)
+        &\propto \pi(c)\prod_{d=1}^{D}p(x_d\mid \theta_{dc})
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    x_d\in\{0,1\},\quad x_d\mid y=c\sim Bern(\theta_{dc})
+\end{equation*}
+
+\bulletPoint{Latent Variable and Mixture}:
+\useshortskip \begin{equation*}
+    z\sim \mathrm{Cat}(z\mid \pi),\qquad
+    \theta=(\pi,\{\eta_k\}_{k=1}^{K})
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathbf{x}\mid\theta)
+        &=\sum_{k=1}^{K}p(\mathbf{x},z=k\mid\theta) \\
+        &=\sum_{k=1}^{K}\pi(k)\,p(\mathbf{x}\mid\eta_k)
+    \end{split}
+\end{equation*}
+GMM example:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathbf{x}\mid\theta)
+        &=\sum_{k=1}^{K}\pi(k)\,\mathcal{N}(\mathbf{x}\mid\mu_k,\Sigma_k),\\
+        \theta&=(\pi,\{(\mu_k,\Sigma_k)\}_{k=1}^{K})
+    \end{split}
+\end{equation*}
+
+\bulletPoint{GMM}:
+Mixture likelihood:
+\useshortskip \begin{equation*}
+    p(x_i\mid\theta)=\sum_{k=1}^{K}\pi_k\,p_k(x_i)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \log p(\mathcal{D}\mid\theta)=
+    \sum_{i=1}^{n}\log\!\left(\sum_{k=1}^{K}\pi_k\,p_k(x_i)\right)
+\end{equation*}
+Algorithmic issues:
+\useshortskip \begin{equation*}
+    \log\!\left(\sum_k \pi_k p_k(x_i)\right)\neq
+    \sum_k \log(\pi_k p_k(x_i))
+\end{equation*}
+Optimization: Non-convex; difficult optimization.
+\useshortskip \begin{equation*}
+    \mu_k=x_i,\ \Sigma_k\to 0
+    \Rightarrow \mathcal{N}(x_i\mid\mu_k,\Sigma_k)\to\infty
+\end{equation*}
+Singularity: likelihood can diverge to $\infty$.
+\useshortskip \begin{equation*}
+    (\pi_1,\pi_2,\mu_1,\mu_2)\leftrightarrow
+    (\pi_2,\pi_1,\mu_2,\mu_1)
+\end{equation*}
+Unidentifiability: same pdf, parameters not identifiable.
+Complete-data likelihood (EM motivation):
+\useshortskip \begin{equation*}
+    p(\mathbf{y}\mid\theta)=
+    \prod_{i=1}^{n}\Big(\pi_{z_i}\,p(x_i\mid\eta_{z_i})\Big)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \log p(\mathbf{y}\mid\theta)
+        &=\sum_{i=1}^{n}\log\!\Big(\pi_{z_i}p(x_i\mid\eta_{z_i})\Big)\\
+        &=\sum_{i=1}^{n}\Big(\log\pi_{z_i}+\log p(x_i\mid\eta_{z_i})\Big)
+    \end{split}
+\end{equation*}
+GMM model:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(x\mid\theta)
+        &=\sum_{k=1}^{K}\pi_k\,\mathcal{N}(x\mid\mu_k,\Sigma_k),\\
+        \theta&=(\{\pi_k\},\{\mu_k\},\{\Sigma_k\})
+    \end{split}
+\end{equation*}
+MLE with known $z$ (Hard-EM setting):
+\useshortskip \begin{equation*}
+    \begin{split}
+        n_k&=\sum_{i=1}^{n}\mathbf{1}\{z_i=k\},\\
+        \hat{\mu}_k&=\frac{1}{n_k}\sum_{i:z_i=k}x_i
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \hat{\Sigma}_k=\frac{1}{n_k}
+    \sum_{i:z_i=k}(x_i-\hat{\mu}_k)(x_i-\hat{\mu}_k)^T
+\end{equation*}
+
+\bulletPoint{GMM EM}:
+Goal (incomplete data $x=T(y)$):
+\useshortskip \begin{equation*}
+    \hat{\theta}=\arg\max_{\theta\in\Theta}\log p(x\mid\theta)
+\end{equation*}
+Use complete-data surrogate:
+\useshortskip \begin{equation*}
+    Q(\theta\mid\theta^{(m)})=
+    \mathbb{E}_{p(y\mid x,\theta^{(m)})}\!\left[\log p(y\mid\theta)\right]
+\end{equation*}
+E-step:
+\useshortskip \begin{equation*}
+    \begin{split}
+        Q(\theta\mid\theta^{(m)})
+        &=\int \log p(y\mid\theta)\,p(y\mid x,\theta^{(m)})\,dy
+    \end{split}
+\end{equation*}
+M-step:
+\useshortskip \begin{equation*}
+    \theta^{(m+1)}=\arg\max_{\theta\in\Theta}Q(\theta\mid\theta^{(m)})
+\end{equation*}
+Meanings: $x$ incomplete data, $y$ complete data, $z$ latent variable, $\theta^{(m)}$ current parameter guess, $Q$ expected complete-data log-likelihood.
+GMM instance ($y=\{(x_i,z_i)\}_{i=1}^{n}$):
+\useshortskip \begin{equation*}
+    \begin{split}
+        r_{ik}^{(m)}&=p(z_i=k\mid x_i,\theta^{(m)})\\
+        &=\frac{\pi_k^{(m)}\mathcal{N}(x_i\mid\mu_k^{(m)},\Sigma_k^{(m)})}
+        {\sum_{j=1}^{K}\pi_j^{(m)}
+        \mathcal{N}(x_i\mid\mu_j^{(m)},\Sigma_j^{(m)})}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        n_k^{(m)}&=\sum_{i=1}^{n}r_{ik}^{(m)},\\
+        \pi_k^{(m+1)}&=\frac{n_k^{(m)}}{n}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \mu_k^{(m+1)}=\frac{1}{n_k^{(m)}}\sum_{i=1}^{n}r_{ik}^{(m)}x_i
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \Sigma_k^{(m+1)}
+        &=\frac{1}{n_k^{(m)}}\sum_{i=1}^{n}r_{ik}^{(m)}\\
+        &\quad\cdot (x_i-\mu_k^{(m+1)})(x_i-\mu_k^{(m+1)})^T
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        &L^{(m)} \\
+        &=\frac{1}{n}\sum_{i=1}^{n}\log\!\left(
+        \sum_{k=1}^{K}\pi_k^{(m)}
+        \mathcal{N}(x_i\mid\mu_k^{(m)},\Sigma_k^{(m)})\right)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    |L^{(m+1)}-L^{(m)}|\le\epsilon
+\end{equation*}
+
+\bulletPoint{MAP-EM}:
+Goal:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \theta_{MAP}&=\arg\max_{\theta}
+        \big(\log p(x\mid\theta)+\log p(\theta)\big),\\
+        x&=T(y)
+    \end{split}
+\end{equation*}
+Q-function:
+\useshortskip \begin{equation*}
+    Q(\theta\mid\theta^{(m)})=
+    \mathbb{E}_{p(y\mid x,\theta^{(m)})}
+    \!\left[\log p(y\mid\theta)\right]
+\end{equation*}
+E-step:
+\useshortskip \begin{equation*}
+    \begin{split}
+        &p(y\mid x,\theta^{(m)}),\\
+        &Q(\theta\mid\theta^{(m)})
+        =\int \log p(y\mid\theta)\,p(y\mid x,\theta^{(m)})\,dy
+    \end{split}
+\end{equation*}
+M-step:
+\useshortskip \begin{equation*}
+    \theta^{(m+1)}=
+    \arg\max_{\theta}\Big(Q(\theta\mid\theta^{(m)})+\log p(\theta)\Big)
+\end{equation*}
+Meanings: $x$ incomplete data, $y$ complete data, $\theta^{(m)}$ current guess, $Q$ expected complete-data log-likelihood, $\log p(\theta)$ prior regularizer.
+Difference from standard EM:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \text{EM: }\theta^{(m+1)}&=\arg\max_{\theta}Q,\\
+        \text{MAP-EM: }\theta^{(m+1)}
+        &=\arg\max_{\theta}\big(Q+\log p(\theta)\big)
+    \end{split}
+\end{equation*}
+Interpretation:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \text{MAP}&=\text{MLE}+\text{Regularization},\\
+        \log p(\theta)&\Rightarrow \text{penalty term}
+    \end{split}
+\end{equation*}
+GMM priors:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \pi&\sim \mathrm{Dirichlet},\quad
+        \mu_k\sim \mathcal{N},\\
+        \Sigma_k&\sim \mathrm{Wishart}\ \text{or}\ \mathrm{Inv\text{-}Wishart}
+    \end{split}
+\end{equation*}
+Pros: avoids singularity, improves stability, reduces overfitting.
+Cons: need priors/hyperparameters, M-step is more complex.
+
+\bulletPoint{Cluster Hard EM (K-Means)}:
+GMM:
+\useshortskip \begin{equation*}
+    p(x)=\sum_{k=1}^{K}\pi_k\,\mathcal{N}(x\mid\mu_k,\Sigma_k)
+\end{equation*}
+K-Means special case:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \Sigma_k&=\sigma^2 I,\qquad
+        \pi_k=\frac{1}{K},\\
+        \theta&=\{\mu_1,\ldots,\mu_K\}
+    \end{split}
+\end{equation*}
+Hard assignment:
+\useshortskip \begin{equation*}
+    \begin{split}
+        r_{ik}&=
+        \begin{cases}
+        1, & k=k_i\\
+        0, & \text{otherwise}
+        \end{cases},\\
+        k_i&=\arg\min_k\|x_i-\mu_k\|^2
+    \end{split}
+\end{equation*}
+Q-form:
+\useshortskip \begin{equation*}
+    Q=\sum_{i,k}r_{ik}
+    \big(\log\pi_k+\log\mathcal{N}(x_i\mid\mu_k,\Sigma_k)\big)
+\end{equation*}
+\useshortskip \begin{equation*}
+    Q=
+    -\frac{1}{2\sigma^2}\sum_i\|x_i-\mu_{k_i}\|^2+\mathrm{const}
+\end{equation*}
+Objective and M-step:
+\useshortskip \begin{equation*}
+    \min_{\mu_1,\ldots,\mu_K}\sum_i\|x_i-\mu_{k_i}\|^2
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        N_k&=\sum_i \mathbf{1}\{k_i=k\},\\
+        \mu_k&=\frac{1}{N_k}\sum_{i:k_i=k}x_i
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Markov Chain (Discrete, Homogeneous)}:
+Markov property:
+\useshortskip \begin{equation*}
+    p(x[t]\mid x[0:t-1])=p(x[t]\mid x[t-1])
+\end{equation*}
+State space:
+\useshortskip \begin{equation*}
+    x[t]\in\{1,\ldots,M\}
+\end{equation*}
+Transition matrix:
+\useshortskip \begin{equation*}
+    \begin{split}
+    T(i,j)=P(x[t]=j\mid x[t-1]=i), \\
+    T=[T(i,j)]_{i,j=1}^{M}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \sum_{j=1}^{M}T(i,j)=1
+\end{equation*}
+State evolution:
+\useshortskip \begin{equation*}
+    \begin{split}
+    \pi(x)=P(x[0]=x),\\
+    p_t=p_{t-1}T=p_0T^t
+    \end{split}
+\end{equation*}
+Trajectory probability:
+\useshortskip \begin{equation*}
+    p(x[0:t]\mid\pi,T)=
+    \pi(x[0])\prod_{s=1}^{t}T(x[s-1],x[s])
+\end{equation*}
+MLE with dataset $D=\{x_i[0:t_i]\}_{i=1}^{n}$:
+\useshortskip \begin{equation*}
+    \begin{split}
+    &\log p(D\mid\pi,T)= \\
+    &\sum_x N_x\log \pi(x)+\sum_{x,y}N_{xy}\log T(x,y)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    N_x=\sum_{i=1}^{n}\mathbf{1}\{x_i[0]=x\}
+\end{equation*}
+\useshortskip \begin{equation*}
+    N_{xy}=\sum_{i=1}^{n}\sum_{t=1}^{t_i}
+    \mathbf{1}\{x_i[t-1]=x,\ x_i[t]=y\}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \hat{\pi}(x)=\frac{N_x}{n},\qquad
+    \hat{T}(x,y)=\frac{N_{xy}}{\sum_{z=1}^{M}N_{xz}}
+\end{equation*}
+MLE = empirical frequency (normalized counts).
+
+\bulletPoint{Hidden Markov Model (HMM)}:
+Model:
+\useshortskip \begin{equation*}
+    \begin{split}
+        z[t]&\in\{1,\ldots,M\},\\
+        \pi(z)&=P(z[0]=z)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        T(i,j)&=P(z[t]=j\mid z[t-1]=i),\\
+        p(x[t]\mid z[t]=k)&=p(x[t]\mid \phi_k)
+    \end{split}
+\end{equation*}
+Joint probability (one sequence):
+\useshortskip \begin{equation*}
+    \begin{split}
+        &p(x[0:T],z[0:T])=\\
+        &\pi(z[0])\prod_{t=1}^{T}T(z[t-1],z[t])\cdot\prod_{t=0}^{T}p(x[t]\mid \phi_{z[t]})
+    \end{split}
+\end{equation*}
+MLE if $z$ observed:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \log p(D\mid\theta)
+        &=\sum_i \log \pi(z_i[0]) \\
+        &\quad+\sum_i\sum_{t=1}^{t_i}\log T(z_i[t-1],z_i[t]) \\
+        &\quad+\sum_i\sum_{t=0}^{t_i}\log p(x_i[t]\mid \phi_{z_i[t]})
+    \end{split}
+\end{equation*}
+Baum-Welch (EM for HMM), $\theta=(\pi,T,\phi)$.
+E-step (Forward-Backward):
+\useshortskip \begin{equation*}
+    \begin{split}
+        \text{Forward:}\alpha_t(z)&=p(x[0:t],z[t]=z),\\
+        \text{Backward:}\beta_t(z)&=p(x[t+1:T]\mid z[t]=z)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \text{Forward-Backward:}\gamma_t(z)&=P(z[t]=z\mid x[0:T])\\
+        &=\frac{\alpha_t(z)\beta_t(z)}
+        {\sum_{z'}\alpha_t(z')\beta_t(z')}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \xi_t(z,z')=P(z[t]=z,z[t+1]=z'\mid x[0:T])
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \xi_t(z,z')&\propto
+        \alpha_t(z)\,T(z,z')\\
+        &\quad\cdot p(x[t+1]\mid\phi_{z'})\,\beta_{t+1}(z')
+    \end{split}
+\end{equation*}
+M-step:
+\useshortskip \begin{equation*}
+    \pi(z)=\frac{1}{n}\sum_{i=1}^{n}\gamma_{i,0}(z)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        T(z,z')
+        &=\frac{\sum_i\sum_{t=1}^{t_i}\xi_{i,t-1}(z,z')}
+        {\sum_i\sum_{t=1}^{t_i}\gamma_{i,t-1}(z)}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \phi_z
+        &=\arg\max_{\phi_z}\sum_i\sum_t
+        \gamma_{i,t}(z)\log p(x_i[t]\mid\phi_z)
+    \end{split}
+\end{equation*}
+Algorithm: init $\theta^{(0)}$; E-step $(\alpha,\beta,\gamma,\xi)$; M-step $(\pi,T,\phi)$.
+Repeat until convergence.
+
+\bulletPoint{HMM Inference}:
+Filtering (online):
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(z[t]\mid x[0:t]),\\
+        \alpha_t(z)&=p(x[0:t],z[t]=z)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    p(z[t]\mid x[0:t])=
+    \frac{\alpha_t(z)}{\sum_{z'}\alpha_t(z')}
+\end{equation*}
+Smoothing (offline):
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(z[t]\mid x[0:T]),\\
+        \gamma_t(z)&=
+        \frac{\alpha_t(z)\beta_t(z)}
+        {\sum_{z'}\alpha_t(z')\beta_t(z')}
+    \end{split}
+\end{equation*}
+Fixed-lag smoothing:
+\useshortskip \begin{equation*}
+    p(z[t-\ell]\mid x[0:t])
+\end{equation*}
+Prediction ($h$-step ahead):
+\useshortskip \begin{equation*}
+    \begin{split}
+        &p(z[t+h]\mid x[0:t])= \\
+        &\sum_{z[t],\ldots,z[t+h-1]}\left(\prod_{s=1}^{h}T(z[t+s-1],z[t+s])\right)\\
+        &\quad\cdot p(z[t]\mid x[0:t])
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p_{t+h}&=p_tT^h,\\
+        p_t&=p(z[t]\mid x[0:t])
+    \end{split}
+\end{equation*}
+Predict future observation:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(x[t+h]\mid x[0:t])
+        &=\sum_z p(x[t+h]\mid z)\\
+        &\quad\cdot p(z[t+h]\mid x[0:t])
+    \end{split}
+\end{equation*}
+MAP state sequence:
+\useshortskip \begin{equation*}
+    z^*[0:T]=\arg\max_{z[0:T]}p(z[0:T]\mid x[0:T])
+\end{equation*}
+Use Viterbi algorithm.
+
+\bulletPoint{HMM Inference Tasks}:
+Filtering (Forward):
+\useshortskip \begin{equation*}
+    p(z[t]\mid x[0:t])
+\end{equation*}
+Smoothing (Forward-Backward):
+\useshortskip \begin{equation*}
+    p(z[t]\mid x[0:T])
+\end{equation*}
+Fixed-lag smoothing (Forward-Backward delay $\ell$):
+\useshortskip \begin{equation*}
+    p(z[t-\ell]\mid x[0:t])
+\end{equation*}
+Prediction ($h$-step):
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(z[t+h]\mid x[0:t]),\qquad
+        p_{t+h}=p_tT^h,\\
+        p_t=p(z[t]\mid x[0:t])
+    \end{split}
+\end{equation*}
+Viterbi (MAP path):
+\useshortskip \begin{equation*}
+    z^*[0:T]=\arg\max_{z[0:T]}p(z[0:T]\mid x[0:T])
+\end{equation*}
+
+
+
+
+
+% basic math operations
+
+\bulletPoint{Vector Operations}:
+\useshortskip \begin{equation*}
+    \mathbf{x}=\begin{bmatrix}x_1\\x_2\\ \vdots \\x_n\end{bmatrix},\qquad
+    E[\mathbf{x}]=\begin{bmatrix}E[x_1]\\E[x_2]\\ \vdots \\E[x_n]\end{bmatrix}
+\end{equation*}
+If $\mathbf{A}$ is deterministic, $E[\mathbf{A}\mathbf{x}]=\mathbf{A}E[\mathbf{x}]$.
+\useshortskip \begin{equation*}
+    \begin{split}
+        \mathrm{cov}(\mathbf{x}) &= \Sigma_{\mathbf{x}\mathbf{x}} \\
+        &= E\!\left[(\mathbf{x}-E[\mathbf{x}])(\mathbf{x}-E[\mathbf{x}])^T\right] \\
+        \mathrm{cov}(\mathbf{A}\mathbf{x}) &= \mathbf{A}\,\mathrm{cov}(\mathbf{x})\,\mathbf{A}^T
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \mathrm{cov}(\mathbf{x},\mathbf{y}) &= \Sigma_{\mathbf{x}\mathbf{y}} \\
+        &= E\!\left[(\mathbf{x}-E[\mathbf{x}])(\mathbf{y}-E[\mathbf{y}])^T\right]
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \mathrm{cov}(\mathbf{x})=E[\mathbf{x}\mathbf{x}^T]-E[\mathbf{x}]E[\mathbf{x}]^T
+\end{equation*}
+Matrix derivatives:
+\useshortskip \begin{equation*}
+    \frac{\partial(\mathbf{a}^T\mathbf{x})}{\partial \mathbf{x}}=\mathbf{a},\qquad
+    \frac{\partial(\mathbf{x}^T\mathbf{A}\mathbf{x})}{\partial \mathbf{x}}=
+    (\mathbf{A}+\mathbf{A}^T)\mathbf{x}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{\partial\,\mathbf{a}^T\mathbf{X}\mathbf{b}}{\partial \mathbf{X}}
+    =\mathbf{a}\mathbf{b}^T
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{\partial \det(\mathbf{X})}{\partial \mathbf{X}}
+    =\det(\mathbf{X})(\mathbf{X}^{-1})^T
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{\partial\!\left(\mathbf{a}^T\mathbf{X}^{-1}\mathbf{b}\right)}{\partial \mathbf{X}}
+    =-(\mathbf{X}^{-1})^T\mathbf{a}\mathbf{b}^T(\mathbf{X}^{-1})^T
+\end{equation*}
+Cross-covariance under Linear Transformation:
+\useshortskip \begin{equation*}
+    \mathrm{cov}(\mathbf{A}\mathbf{x},\, \mathbf{B}\mathbf{y}) = \mathbf{A}\,\mathrm{cov}(\mathbf{x},\mathbf{y})\,\mathbf{B}^T
+\end{equation*}
+Quadratic Form Derivative (Symmetric $\mathbf{A}$):
+\useshortskip \begin{equation*}
+    \mathbf{A} = \mathbf{A}^T \implies \frac{\partial(\mathbf{x}^T\mathbf{A}\mathbf{x})}{\partial \mathbf{x}} = 2\mathbf{A}\mathbf{x}
+\end{equation*}
+
+\bulletPoint{Example 1 (Markov Chain)}:
+\useshortskip \begin{equation*}
+    T=\begin{bmatrix}
+    0.2 & 0.8\\
+    0.7 & 0.3
+    \end{bmatrix},\qquad
+    p_0=[0.5\ \ 0.5]
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        p_1&=p_0T=[0.45\ \ 0.55],\\
+        p_2&=p_1T=[0.475\ \ 0.525]
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        &p(x[0]=1,x[1]=2,x[2]=1)\\
+        &=p_0(1)\,T(1,2)\,T(2,1)\\
+        &=0.5\times 0.8\times 0.7
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Example 2 (Markov Chain MLE)}:
+\useshortskip \begin{equation*}
+    \begin{split}
+        &\mathcal{S}=\{1,2\},\ \mathcal{D}=\{x_1[0:2],x_2[0:1],x_3[0:3]\},\\
+        &x_1=(1,2,1),\ x_2=(2,2),\ x_3=(1,1,2,1)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \log p(\mathcal{D}\mid\pi,T)
+        &=2\log\pi(1)+\log\pi(2)\\
+        &\quad+\log T(1,1)+2\log T(1,2)\\
+        &\quad+2\log T(2,1)+\log T(2,2)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \hat{\pi}(1)=\frac{2}{3},\qquad
+    \hat{\pi}(2)=\frac{1}{3}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \hat{T}=
+    \begin{bmatrix}
+    \frac{1}{3} & \frac{2}{3}\\
+    \frac{2}{3} & \frac{1}{3}
+    \end{bmatrix}
+\end{equation*}
+
+\bulletPoint{Integral \& Series Toolbox}:
+Basic integrals:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \int x^n\,dx&=\frac{x^{n+1}}{n+1}+C,\quad (n\neq -1),\\
+        \int \frac{1}{x}\,dx&=\ln|x|+C
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \int e^{ax}\,dx&=\frac{1}{a}e^{ax}+C,\\
+        \int \sin(ax)\,dx&=-\frac{1}{a}\cos(ax)+C,\\
+        \int \cos(ax)\,dx&=\frac{1}{a}\sin(ax)+C
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \int \frac{1}{x^2+a^2}\,dx
+        &=\frac{1}{a}\arctan\!\left(\frac{x}{a}\right)+C,\\
+        \int \frac{1}{\sqrt{a^2-x^2}}\,dx
+        &=\arcsin\!\left(\frac{x}{a}\right)+C
+    \end{split}
+\end{equation*}
+Integration by parts:
+\useshortskip \begin{equation*}
+    \int u\,dv=uv-\int v\,du
+\end{equation*}
+Arithmetic \& geometric sums:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \sum_{k=1}^{n}k&=\frac{n(n+1)}{2},\\
+        \sum_{k=0}^{n-1}(a+kd)&=na+\frac{n(n-1)}{2}d
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \sum_{k=0}^{n-1}ar^k&=a\frac{1-r^n}{1-r},\quad (r\neq 1),\\
+        \sum_{k=0}^{\infty}ar^k&=\frac{a}{1-r},\quad (|r|<1)
+    \end{split}
+\end{equation*}
+Beta mode:
+\useshortskip \begin{equation*}
+    \begin{split}
+    &X\sim\mathrm{Beta}(\alpha,\beta): \\
+    &\mathrm{mode}=\frac{\alpha-1}{\alpha+\beta-2},
+    \ \alpha>1,\beta>1\\
+    &\mathrm{mode}=0,\ \alpha\le 1,\beta>1\\
+    &\mathrm{mode}=1,\ \alpha>1,\beta\le 1\\
+    &\alpha\le 1,\beta\le 1:\ \text{no interior mode}
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Terminology}:
+Latent state; Latent state transition matrix; Emission probabilities;\\
+long-range dependencies between observation; initial pdf;\\
+transition matrix; emission probabilities; (row) stochastic matrix;\\
+state space; latent variable; complete data; incomplete data;\\
+Expectation-Maximization (EM) Algorithm; responsibility;\\
+Maximum A Posteriori; Monotonicity;\\
+likelihood function (of $\theta$ with $\mathcal{D}$ fixed);\\
+design matrix; constant prediction using empirical mean;\\
+Heuristics to avoid collapse: reset a mean to random value,\\
+reset covariance.
+
+
+\end{multicols*}
+\end{document}

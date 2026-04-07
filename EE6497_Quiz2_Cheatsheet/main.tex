@@ -1,0 +1,798 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,top=1pt,bottom=2pt,left=1pt,right=1pt,marginparwidth=1pt,headheight=1pt]{geometry}
+
+\input{preamble.tex}
+
+\usepackage{blindtext}
+\usepackage{multicol}
+\usepackage{color}
+\setlength{\columnsep}{0.2cm}
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{blue}}
+
+\usepackage{xpatch}
+\xpatchcmd{\NCC@ignorepar}{%
+\abovedisplayskip\abovedisplayshortskip}
+{%
+\abovedisplayskip\abovedisplayshortskip%
+\belowdisplayskip\belowdisplayshortskip}
+{}{}
+
+\setlength{\parindent}{0in}
+\setlength{\parskip}{0in}
+
+\setlength{\belowdisplayskip}{0pt} \setlength{\belowdisplayshortskip}{0pt}
+\setlength{\abovedisplayskip}{0pt} \setlength{\abovedisplayshortskip}{0pt}
+
+
+
+\usepackage{soul}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\newcommand{\bulletPoint}[1]{\ul{\textit{\textbf{#1}}}}
+
+
+
+% For better text align
+\usepackage{ragged2e}
+\lstset{
+    basicstyle=\ttfamily\tiny,
+    breaklines=true,
+    breakatwhitespace=false,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false
+}
+
+
+
+\begin{document}
+\singlespacing
+\begin{multicols*}{4}
+\tiny
+\raggedright
+% Add new cheatsheet content here.
+
+\bulletPoint{Softmax Layer}:
+\begin{itemize}
+\item In multi-class classification tasks, the output layer is typically a softmax layer, i.e., it employs a softmax activation function.
+\item If a layer with a sigmoid activation function is used as the output layer instead, the predictions by the NN may not be easy to interpret, i.e., the outputs do not sum up to 1.
+\item Note that an output layer with sigmoid activations can still be used for binary classification.
+\item A Softmax layer applies the Softmax function to convert logits into probability values ranging from $[0,1]$.
+\item The outputs sum to 1, making it suitable for multi-class classification.
+\item The values $z$ inputted to the softmax layer are referred to as logits.
+\end{itemize}
+
+\bulletPoint{Activation: Sigmoid}:
+\begin{itemize}
+\item Sigmoid function $\sigma$: takes a real-valued number and ``squashes'' it into the range between 0 and 1.
+\item The output can be interpreted as the firing rate of a biological neuron.
+\item Not firing $=0$; Fully firing $=1$.
+\item When the neuron's activation are 0 or 1, sigmoid neurons saturate.
+\item Gradients at these regions are almost zero, so almost no signal will flow.
+\item Sigmoid activations are less common in modern NNs.
+\end{itemize}
+
+\bulletPoint{Activation: Tanh}:
+\begin{itemize}
+\item Tanh function: takes a real-valued number and ``squashes'' it into range between $-1$ and $1$.
+\item Like sigmoid, tanh neurons saturate.
+\item Unlike sigmoid, the output is zero-centered.
+\item It is therefore preferred than sigmoid.
+\item Tanh is a scaled sigmoid: $\tanh(x)=2\cdot \sigma(2x)-1$.
+\end{itemize}
+
+\bulletPoint{Activation: ReLU}:
+\begin{itemize}
+\item ReLU (Rectified Linear Unit): takes a real-valued number and thresholds it at zero.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    f(x)=\max(0,x)
+\end{equation*}
+\begin{itemize}
+\item Most modern deep NNs use ReLU activations.
+\item ReLU is fast to compute.
+\item Compared to sigmoid, tanh, it simply thresholds a matrix at zero.
+\item ReLU accelerates the convergence of gradient descent due to its linear, non-saturating form.
+\item ReLU prevents the gradient vanishing problem.
+\end{itemize}
+
+\bulletPoint{Activation: Leaky ReLU}:
+\begin{itemize}
+\item The problem of ReLU activations: they can ``die''.
+\item ReLU could cause weights to update in a way that the gradients can become zero and the neuron will not activate again on any data.
+\item Example: when a large learning rate is used.
+\item Leaky ReLU activation function is a variant of ReLU.
+\item Instead of the function being 0 when $x<0$, a Leaky ReLU has a small positive slope, e.g., $\alpha=0.01$ or similar.
+\item This resolves the dying ReLU problem.
+\item Most current works still use ReLU.
+\item With a proper setting of the learning rate, the problem of dying ReLU can be avoided.
+\end{itemize}
+
+\bulletPoint{Activation: Linear Function}:
+\begin{itemize}
+\item Linear function means that the output signal is proportional to the input signal to the neuron.
+\item If the value of the constant $c$ is 1, it is also called identity activation function.
+\item This activation type is used in regression problems.
+\item Example: the last layer can have linear activation function in order to output a real number, and not a class membership.
+\end{itemize}
+
+\bulletPoint{Activation: Maxout}:
+\begin{itemize}
+\item Maxout outputs the maximum value among multiple affine functions.
+\item For input $\mathbf{x}$, a Maxout unit can be written as:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    f(\mathbf{x})=\max_{i=1,\ldots,k}(\mathbf{w}_i^T\mathbf{x}+b_i)
+\end{equation*}
+\begin{itemize}
+\item It can be viewed as a learnable piecewise linear activation.
+\item It does not saturate in the same way as sigmoid/tanh, and it avoids the zero-gradient region of standard ReLU on the negative side.
+\item It is more flexible than ReLU/Leaky ReLU because the activation shape is learned from data.
+\item Drawback: it introduces more parameters, so computation and memory cost are higher.
+\item Typical use case: deep networks that need a more expressive activation, especially when stronger nonlinear modeling is desired.
+\item It is also commonly paired with dropout.
+\item Example: let $z_1=2x+1$, $z_2=-x+3$. Then
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    f(x)=\max(2x+1,-x+3)
+\end{equation*}
+\begin{itemize}
+\item If $x=1$, then $z_1=3$, $z_2=2$, so $f(1)=3$.
+\item If $x=-1$, then $z_1=-1$, $z_2=4$, so $f(-1)=4$.
+\end{itemize}
+
+\bulletPoint{Activation: ELU}:
+\begin{itemize}
+\item ELU (Exponential Linear Unit) keeps a non-zero derivative for both positive and negative input, so there is no more dying ReLU problem.
+\item Its activation function is
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    f(x)=
+    \begin{cases}
+        x, & x\geq 0\\
+        \alpha(e^x-1), & x<0
+    \end{cases}
+\end{equation*}
+\begin{itemize}
+\item For $x\ge 0$, ELU behaves like a linear function.
+\item For $x<0$, ELU becomes a smooth exponential curve controlled by $\alpha$.
+\item Compared with ReLU, ELU allows gradient flow on the negative side.
+\end{itemize}
+
+\bulletPoint{Training NNs for Classification}:
+\begin{itemize}
+\item The network parameters $\theta$ include the weight matrices and bias vectors from all layers.
+\item Often, the model parameters $\theta$ are referred to as weights.
+\item Training a model means learning a set of parameters $\theta$ that are optimal according to a criterion.
+\item This is one of the greatest challenges in ML.
+\end{itemize}
+
+\bulletPoint{Data Preprocessing}:
+\begin{itemize}
+\item Data preprocessing helps convergence during training.
+\item Standardization: divide each feature by its standard deviation to obtain standard deviation 1 for each data dimension (feature).
+\item Normalization (by mean subtraction / scaling): scale the data within $[0,1]$ or $[-1,1]$.
+\item Example: image pixel intensities are divided by 255 to be scaled into the $[0,1]$ range.
+\item PyTorch example:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    x_{\text{std}}=\frac{x-\mu}{\sigma}
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    x_{\text{norm}}=\frac{x-x_{\min}}{x_{\max}-x_{\min}}
+\end{equation*}
+\texttt{import torch}\\
+\texttt{x = torch.randn([100])}\\
+\texttt{x.mean() = 0.02, x.var() = 0.9}\\
+\texttt{x\_standardized = (x - x.mean()) / x.std()}\\
+\texttt{x\_standardized.mean() = 0.0, x\_standardized.var() = 1.0}\\
+\texttt{x\_normalized = (x - x.min()) / (x.max() - x.min())}\\
+\texttt{x\_normalized.min() = 0.0, x\_normalized.max() = 1.0}
+
+\bulletPoint{Cross-Entropy Example}:
+\texttt{import torch}\\
+\texttt{from torch.nn.functional import cross\_entropy}\\
+\texttt{y = torch.tensor([0.8, 0.1, 0.06, 0.04])}\\
+\texttt{cross\_entropy(y, torch.tensor(0)) = 0.8926}\\
+\texttt{cross\_entropy(y, torch.tensor(1)) = 1.5926}\\
+\texttt{cross\_entropy(y, torch.tensor(2)) = 1.6326}\\
+Predicted probabilities: $P(y=0)=0.8,\; P(y=1)=0.1,\; P(y=2)=0.06,\; P(y=3)=0.04$.\\
+Smaller CE loss means the predicted distribution matches the true label better.
+
+\bulletPoint{Gradient Descent Algorithm}:
+\begin{itemize}
+\item Gradient descent algorithm stops when a local minimum of the loss surface is reached.
+\item GD does not guarantee reaching a global minimum.
+\item However, empirical evidence suggests that GD works well for NNs.
+\item For most tasks, the loss surface $\mathcal{L}(\theta)$ is highly complex and non-convex.
+\item Random initialization in NNs results in different initial parameters $\theta_0$ every time the NN is trained.
+\item Gradient descent may reach different minima at every run.
+\item Therefore, a NN may produce different predicted outputs.
+\item Currently, we do not have algorithms that guarantee reaching a global minimum for an arbitrary loss function.
+\item Besides the local minima problem, GD can be very slow at plateaus, and it can get stuck at saddle points.
+\end{itemize}
+
+\bulletPoint{Mini-Batch Gradient Descent}:
+\begin{itemize}
+\item Therefore, GD, also known as vanilla GD, is almost always replaced with mini-batch GD.
+\item Approach: compute the loss $\mathcal{L}(\theta)$ on a mini-batch of images, update the parameters $\theta$, and repeat until all images are used.
+\item At the next epoch, shuffle the training data and repeat the above process.
+\item It works because the gradient from a mini-batch is a good approximation of the gradient from the entire training set.
+\end{itemize}
+
+\bulletPoint{Adam}:
+\begin{itemize}
+\item Adam stands for Adaptive Moment Estimation.
+\item Adam computes a weighted average of past gradients, i.e., the first moment of the gradient.
+\item Adam also computes a weighted average of past squared gradients, i.e., the second moment of the gradient.
+\item Other commonly used optimization methods include Adagrad, Adadelta, RMSprop, Nadam, etc.
+\item The most commonly used optimizers nowadays are Adam and SGD with momentum.
+\end{itemize}
+
+\bulletPoint{Learning Rate}:
+\begin{itemize}
+\item The gradient tells us the direction in which the loss has the steepest rate of increase.
+\item However, it does not tell us how far along the opposite direction we should step.
+\end{itemize}
+
+\bulletPoint{Learning Rate Scheduling}:
+\begin{itemize}
+\item Learning rate scheduling changes the value of the learning rate during training.
+\item Annealing means reducing the learning rate over time, also called learning rate decay.
+\item Approach 1: reduce the learning rate by some factor every few epochs.
+\item Typical values: reduce the learning rate by half every 5 epochs, or divide by 10 every 20 epochs.
+\item Approach 2: exponential decay or cosine decay gradually reduce the learning rate over time.
+\item Approach 3: reduce the learning rate by a constant, e.g., by half, whenever the validation loss stops improving.
+\item This requires splitting data into a training set and a validation set.
+\item In TensorFlow: \texttt{tf.keras.callbacks.ReduceLROnPlateau()}.
+\item Common settings: monitor validation loss, factor $=0.1$ (divide by 10), patience $=10$, minimum learning rate $=10^{-6}$.
+\item Warmup means gradually increasing the learning rate initially, and afterward letting it cool down until the end of training.
+\item Barebones PyTorch backpropagation example:
+\end{itemize}
+\begin{lstlisting}
+optimizer = torch.optim.SGD(network.parameters(), lr=0.1)
+scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
+
+for epoch in range(epochs):
+    for x, y in zip(X, Y):
+        optimizer.zero_grad()   # Reset gradients
+        y_pred = network(x)
+        loss = criterion(y_pred, y)
+        loss.backward()         # Backpropagate, calculate gradients
+        optimizer.step()        # Update weights with LR
+    scheduler.step()           # Reduce LR for each epoch
+\end{lstlisting}
+\begin{itemize}
+\item Note that the scheduler is per epoch.
+\item If it is called in the inner loop, the learning rate will decay much faster because it will be updated once per mini-batch instead of once per epoch.
+\end{itemize}
+
+\bulletPoint{Vanishing / Exploding Gradient Problem}:
+\begin{itemize}
+\item During training, gradients can become either very small (vanishing gradients) or very large (exploding gradients).
+\item They result in very small or very large updates of the parameters.
+\item Common solutions: ReLU activations and batch normalization.
+\end{itemize}
+
+\bulletPoint{Generalization}:
+\begin{itemize}
+\item Underfitting: the model is too simple to represent all relevant target characteristics.
+\item Example: model with too few parameters.
+\item Underfitting produces high error on the training set and high error on the validation set.
+\item Overfitting: the model learns patterns specific to the training data, including noise, reducing generalization to unseen data.
+\item Example: model with too many parameters.
+\item Overfitting produces low error on the training set but high error on the validation set.
+\end{itemize}
+
+\bulletPoint{$\ell_2$ Regularization}:
+\begin{itemize}
+\item Add a regularization term that penalizes large weights to the loss function.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathcal{L}_{reg}(\theta)=\mathcal{L}(\theta)+\lambda\sum_k \theta_k^2
+\end{equation*}
+\begin{itemize}
+\item The regularization coefficient $\lambda$ determines how dominant the regularization is during gradient computation.
+\item Large $\lambda$ means a stronger penalty on large weights.
+\end{itemize}
+
+\bulletPoint{$\ell_1$ Regularization}:
+\begin{itemize}
+\item The regularization term is based on the $\ell_1$ norm of the weights.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathcal{L}_{reg}(\theta)=\mathcal{L}(\theta)+\lambda\sum_k |\theta_k|
+\end{equation*}
+\begin{itemize}
+\item $\ell_1$ regularization is less common with NNs.
+\item It often performs worse than $\ell_2$ regularization.
+\item It is also possible to combine $\ell_1$ and $\ell_2$ regularization, called elastic net regularization.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathcal{L}_{reg}(\theta)=\mathcal{L}(\theta)+\lambda_1\sum_k |\theta_k|+\lambda_2\sum_k \theta_k^2
+\end{equation*}
+
+\bulletPoint{Regularization: Dropout}:
+\begin{itemize}
+\item Randomly drop units, together with their connections, during training.
+\item Each unit is dropped with a fixed dropout rate $p$, independent of other units.
+\item The hyper-parameter $p$ needs to be chosen or tuned.
+\item Often, between 20\% and 50\% of the units are dropped.
+\item Dropout is a kind of ensemble learning.
+\item One mini-batch trains one network with dropout, and each time this results in a different architecture.
+\end{itemize}
+
+\bulletPoint{Regularization: Early Stopping}:
+\begin{itemize}
+\item During model training, use a validation set.
+\item Example: validation/train ratio about 25\% to 75\%.
+\item Stop when the validation accuracy or validation loss has not improved after $n$ epochs.
+\item The parameter $n$ is called patience.
+\end{itemize}
+
+\bulletPoint{Batch Normalization}:
+\begin{itemize}
+\item Batch normalization layers act similarly to data preprocessing.
+\item They calculate the mean $\mu$ and variance $\sigma$ of a batch of input data, and normalize the data $x$ to zero mean and unit variance.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \hat{x}=\frac{x-\mu}{\sigma}
+\end{equation*}
+\begin{itemize}
+\item BatchNorm alleviates the difficulty of proper initialization of parameters and hyper-parameters.
+\item It normalizes activations, making them less dependent on the scale of the parameters during initialization.
+\item Therefore, it is less likely to suffer from vanishing or exploding gradients during training.
+\item BatchNorm reduces internal covariate shift, i.e., the change in the distribution of activations due to parameter updates during training.
+\item It stabilizes training and allows higher learning rates without risking divergence.
+\item Consequently, models converge faster and more reliably.
+\item BatchNorm layers are very common in convolutional NNs.
+\item In PyTorch, Batch Normalization is just another layer:
+\end{itemize}
+\begin{lstlisting}
+network = torch.nn.Sequential(
+    torch.nn.Linear(2, 2),
+    torch.nn.BatchNorm1d(2),
+    torch.nn.Linear(2, 2),
+)
+\end{lstlisting}
+
+\bulletPoint{Hyper-Parameter Tuning}:
+\begin{itemize}
+\item Training NNs can involve setting many hyper-parameters:
+\item Number of layers and number of neurons per layer.
+\item Initial learning rate.
+\item Learning rate decay schedule, e.g., decay constant.
+\item Optimizer type.
+\item Regularization parameters, e.g., $\ell_2$ penalty and dropout rate.
+\item Batch size.
+\item Activation functions.
+\item Loss function.
+\item Hyper-parameter tuning can be time-consuming for larger NNs.
+\item Grid search: check all values in a range with a step value.
+\item Random search: randomly sample values for the parameters; often preferred to grid search.
+\item Bayesian hyper-parameter optimization is an active area of research.
+\end{itemize}
+
+\bulletPoint{k-Fold Cross-Validation}:
+\begin{itemize}
+\item Common for hyper-parameter tuning when the training data is small.
+\item It gives a better and less noisy estimate of model performance by averaging across folds.
+\item Example: 5-fold cross-validation.
+\item 1. Split the data into training data and test data.
+\item 2. Split the training data into 5 equal folds.
+\item 3. Use folds 2--5 for training and fold 1 for validation.
+\item 4. Repeat with fold 2 for validation, then fold 3, fold 4, and fold 5.
+\item 5. Average the results over the 5 runs for reporting.
+\item 6. After choosing the best hyper-parameters, evaluate the model on the test data.
+\end{itemize}
+
+\bulletPoint{Deep vs Shallow Networks}:
+\begin{itemize}
+\item Deeper networks often perform better than shallow networks.
+\item However, only up to some limit: after a certain number of layers, the performance of deeper networks plateaus.
+\end{itemize}
+
+\bulletPoint{Biological vs Artificial NNs}:
+\begin{itemize}
+\item Biological neurons respond slowly: about $10^{-3}\,$s, whereas artificial circuits operate around $10^{-9}\,$s.
+\item The brain uses massively parallel computation.
+\item About $10^{11}$ neurons in the brain.
+\item About $10^4$ connections per neuron.
+\item About $10^{15}$ total connections in the brain.
+\item GPT-3 has about $10^{11}$ parameters.
+\item GPT-4 has about $10^{14}$ parameters.
+\item A typical biological neuron, e.g., a pyramidal cell, has complex dynamics and computations.
+\item The brain also uses extremely complex organization.
+\item Current NN models mostly deal only with ``neurons'' and ``local circuits''.
+\item The human brain is still superior in some computations: speech recognition under noisy conditions, speech production, and vision in complex situations.
+\item Recent autonomous driving systems are still not truly fully autonomous.
+\item There is still a long way to go before building a computer that truly mimics the human brain.
+\item Very little is known about the human brain.
+\item Even simulating a single biological neuron can require a supercomputer.
+\item It is unclear which brain processes and structures are functionally essential.
+\item We may not need to mimic the human brain to achieve superhuman intelligence. Probably not.
+\end{itemize}
+
+\bulletPoint{Historical Sketch}:
+\begin{itemize}
+\item 1940s: McCulloch and Pitts, Hebb.
+\item First mathematical neuron model as all-or-none devices.
+\item Hebbian learning rule as a mechanism for learning in biological neurons.
+\item 1950s: Rosenblatt, single-layer perceptrons.
+\item 1960s: Minsky and Papert published the limitations of single-layer NNs.
+\item Their conjecture that multi-layer networks had the same limitations was wrong.
+\item This reduced research funding and suspended much NN research.
+\item 1980s: resurgence in the field.
+\item Hopfield's spin-like neural networks attracted researchers and funding.
+\item Rumelhart et al. re-discovered and popularized backpropagation for multi-layer perceptrons.
+\item The basic ideas of BP can be traced to Bryson and Ho (1969), \textit{Adaptive Optimal Control}.
+\item 2000s: deep learning is old science with better engineering.
+\item Faster computers (GPU, etc.), better software (TensorFlow, etc.), and larger datasets enabled progress.
+\item Milestones: AlexNet (2012), AlphaGo defeating Lee Sedol (2016), ChatGPT.
+\item Deep learning is used across cloud services, medicine, media, security, and autonomous machines.
+\end{itemize}
+
+\bulletPoint{Bias as Additional Input}:
+\begin{itemize}
+\item The bias $b$ of a neuron can be modeled as an additional input.
+\item Let $x_0=+1$ and $w_0=b$.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    v=\sum_{j=0}^{m} w_j x_j
+\end{equation*}
+\begin{itemize}
+\item Then the neuron computes an activation from local field $v$.
+\end{itemize}
+
+\bulletPoint{Single-Neuron Perceptron}:
+\begin{itemize}
+\item For two inputs $\mathbf{p}=[p_1,p_2]^T$, classification is based on
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}^T\mathbf{p}+b>0
+\end{equation*}
+\begin{itemize}
+\item If true, output is class 1; otherwise class 2 (or 0 with step activation).
+\item Whether the threshold is $>0$ or $\ge 0$ usually does not matter in practice.
+\end{itemize}
+
+\bulletPoint{Decision Boundary and Region}:
+\begin{itemize}
+\item Decision boundary:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}^T\mathbf{p}+b=0
+\end{equation*}
+\begin{itemize}
+\item Equivalently, $\mathbf{w}^T\mathbf{p}=-b$.
+\item All points on the boundary have the same inner product with $\mathbf{w}$.
+\item Therefore, the boundary is a line or hyperplane orthogonal to $\mathbf{w}$.
+\item The weight vector determines the orientation of the boundary.
+\item The weight vector and bias together determine its location.
+\item Multiplying both $\mathbf{w}$ and $b$ by the same constant does not change the boundary.
+\item Decision region:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}^T\mathbf{p}+b>0
+\end{equation*}
+\begin{itemize}
+\item The side pointed to by $\mathbf{w}$ has positive activation and output $+1$.
+\item The opposite side has negative activation and output 0 for a step function, or approximately 0 for sigmoid.
+\end{itemize}
+
+\bulletPoint{Example: OR}:
+\begin{itemize}
+\item Training pairs: $(0,0)\to 0$, $(0,1)\to 1$, $(1,0)\to 1$, $(1,1)\to 1$.
+\item One valid choice is
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}=\begin{bmatrix}1\\1\end{bmatrix}
+\end{equation*}
+\begin{itemize}
+\item Pick a boundary point $(0,0.5)$:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}^T\mathbf{p}+b=1\cdot 0+1\cdot 0.5+b=0
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    b=-0.5
+\end{equation*}
+
+\bulletPoint{Example: AND}:
+\begin{itemize}
+\item Training pairs: $(0,0)\to 0$, $(0,1)\to 0$, $(1,0)\to 0$, $(1,1)\to 1$.
+\item Use the same direction
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}=\begin{bmatrix}1\\1\end{bmatrix}
+\end{equation*}
+\begin{itemize}
+\item Choose boundary point $(1,0.5)$:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{w}^T\mathbf{p}+b=1+0.5+b=0
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    b=-1.5
+\end{equation*}
+\begin{itemize}
+\item Same boundary orientation as OR, but shifted by a different bias.
+\end{itemize}
+
+\bulletPoint{Perceptron Limitation}:
+\begin{itemize}
+\item A single-layer perceptron gives only a linear decision boundary.
+\item Therefore, it cannot handle linearly inseparable problems such as XOR.
+\item Multi-layer perceptrons can handle linearly inseparable problems.
+\end{itemize}
+
+\bulletPoint{Example: XOR with Hidden Layers}:
+\begin{itemize}
+\item XOR data: $(0,0)\to 0$, $(0,1)\to 1$, $(1,0)\to 1$, $(1,1)\to 0$.
+\item One construction uses hidden neurons to create intermediate regions, then combines them with AND / OR logic.
+\item Example boundaries for a compact XOR solution:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \begin{split}
+        \mathbf{w}_1^T\mathbf{p}-0.5&=0,\quad \mathbf{w}_1=\begin{bmatrix}1\\1\end{bmatrix}\\
+        \mathbf{w}_2^T\mathbf{p}+1.5&=0,\quad \mathbf{w}_2=\begin{bmatrix}-1\\-1\end{bmatrix}
+    \end{split}
+\end{equation*}
+\begin{itemize}
+\item Output neuron can then perform AND on the hidden outputs, with weights $(1,1)$ and bias $-1.5$.
+\end{itemize}
+
+\bulletPoint{3-Layer XOR Network}:
+\begin{itemize}
+\item Let $\sigma$ be the threshold function.
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{h}_1=\sigma(\mathbf{W}_1\mathbf{p}+\mathbf{b}_1)\in\mathbb{R}^4
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    \mathbf{h}_2=\sigma(\mathbf{W}_2\mathbf{h}_1+\mathbf{b}_2)\in\mathbb{R}^2
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    \hat{y}=\sigma(\mathbf{W}_3\mathbf{h}_2+\mathbf{b}_3)\in\mathbb{R}
+\end{equation*}
+\begin{itemize}
+\item One explicit parameterization:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{W}_1=
+    \begin{bmatrix}
+    -1 & 0\\
+    0 & -1\\
+    1 & 0\\
+    0 & 1
+    \end{bmatrix},\quad
+    \mathbf{b}_1=
+    \begin{bmatrix}
+    0.5\\
+    0.75\\
+    -1.5\\
+    -0.25
+    \end{bmatrix}
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    \mathbf{W}_2=
+    \begin{bmatrix}
+    1 & 1 & 0 & 0\\
+    0 & 0 & 1 & 1
+    \end{bmatrix},\quad
+    \mathbf{b}_2=
+    \begin{bmatrix}
+    -1.5\\
+    -1.5
+    \end{bmatrix}
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    \mathbf{W}_3=
+    \begin{bmatrix}
+    1 & 1
+    \end{bmatrix},\quad
+    b_3=-0.5
+\end{equation*}
+\begin{itemize}
+\item Example for $\mathbf{p}=[0,1]^T$:
+\end{itemize}
+\useshortskip
+\begin{equation*}
+    \mathbf{h}_1=\sigma\!\left(
+    \begin{bmatrix}
+    0.5\\-0.25\\-1.5\\0.75
+    \end{bmatrix}\right)
+    =
+    \begin{bmatrix}
+    1\\0\\0\\1
+    \end{bmatrix}
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    \mathbf{h}_2=\sigma\!\left(
+    \begin{bmatrix}
+    -0.5\\-0.5
+    \end{bmatrix}\right)
+    =
+    \begin{bmatrix}
+    0\\0
+    \end{bmatrix}
+\end{equation*}
+\useshortskip
+\begin{equation*}
+    \hat{y}=\sigma(-0.5)=0
+\end{equation*}
+
+\bulletPoint{XOR NumPy Implementation}:
+\begin{lstlisting}
+import numpy as np
+
+w1 = np.array([[-1, 0], [0, -1], [1, 0], [0, 1]])
+w2 = np.array([[1, 1, 0, 0], [0, 0, 1, 1]])
+w3 = np.array([[1, 1]])
+
+b1 = np.array([0.5, 0.75, -1.5, -0.25])
+b2 = np.array([-1.5, -1.5])
+b3 = np.array([-0.5])
+
+p = np.array([0, 1]).T
+
+h1 = (w1 @ p + b1) >= 0
+h2 = (w2 @ h1 + b2) >= 0
+y = (w3 @ h2 + b3) >= 0
+\end{lstlisting}
+\begin{itemize}
+\item In NumPy, `@` is shorthand for matrix multiplication / dot product.
+\end{itemize}
+
+\bulletPoint{Universal Approximation}:
+\begin{itemize}
+\item A 2-layer network can generate only a single convex decision region.
+\item A 3-layer MLP can approximate arbitrary decision regions by combining many local regions.
+\item For 2 classes, divide one class region into many small hypercubes.
+\item First-layer hidden neurons define the hypercube boundaries.
+\item Second-layer hidden neurons perform AND operations.
+\item Output neuron performs OR across regions.
+\item Universal approximation: the accuracy of an MLP can be made arbitrarily high if there are enough hidden neurons.
+\item Function approximation theorem: a hidden layer of nonconstant, bounded, continuous neurons plus a linear output neuron can approximate any continuous function to arbitrary accuracy, given enough hidden neurons.
+\end{itemize}
+
+\bulletPoint{PyTorch XOR Training Example}:
+\texttt{import torch}\\
+\texttt{\# XOR dataset}\\
+\texttt{X = torch.tensor([[0,0],[0,1],[1,0],[1,1]], dtype=torch.float)}\\
+\texttt{Y = torch.tensor([0,1,1,0], dtype=torch.long)}\\
+\texttt{network = torch.nn.Linear(2, 2)}\\
+\texttt{loss\_fn = torch.nn.CrossEntropyLoss()}\\
+\texttt{optim = torch.optim.SGD(network.parameters(), lr=0.1)}\\
+\texttt{epochs = 50}\\
+\texttt{for epoch in range(epochs):}\\
+\hspace*{1em}\texttt{for x, y in zip(X, Y):}\\
+\hspace*{2em}\texttt{optim.zero\_grad()}\\
+\hspace*{2em}\texttt{y\_pred = network(x)}\\
+\hspace*{2em}\texttt{loss = loss\_fn(y\_pred, y)}\\
+\hspace*{2em}\texttt{loss.backward()}\\
+\hspace*{2em}\texttt{optim.step()}
+
+\bulletPoint{BP vs BP + Momentum Example}:
+\begin{lstlisting}
+# Sample Python Program for a 1-2-1 neural network, trained with BP vs BP + momentum
+# The input data consists of two samples, [0] and [1]
+# The corresponding output data is the same as the input data, [0] and [1]
+# Prints the loss (mean squared error) for every 1000 epochs
+import numpy as np
+
+class NeuralNetwork:
+    def __init__(self, input_size, hidden_size, output_size, learning_rate, momentum=None):
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+        self.learning_rate = learning_rate
+        self.momentum = momentum
+
+        # Initialize weights and biases randomly
+        self.weights_input_hidden = np.random.randn(self.input_size, self.hidden_size)
+        self.bias_hidden = np.zeros((1, self.hidden_size))
+        self.weights_hidden_output = np.random.randn(self.hidden_size, self.output_size)
+        self.bias_output = np.zeros((1, self.output_size))
+
+        # Initialize velocities for momentum
+        if self.momentum:
+            self.velocity_input_hidden = np.zeros((self.input_size, self.hidden_size))
+            self.velocity_hidden_output = np.zeros((self.hidden_size, self.output_size))
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def sigmoid_derivative(self, x):
+        return x * (1 - x)
+
+    def forward_pass(self, X):
+        # Forward pass through the network
+        self.hidden_output = self.sigmoid(np.dot(X, self.weights_input_hidden) + self.bias_hidden)
+        self.output = self.sigmoid(np.dot(self.hidden_output, self.weights_hidden_output) + self.bias_output)
+        return self.output
+
+    def backward_pass(self, X, y, output):
+        # Backward pass through the network
+        error = y - output
+        output_delta = error * self.sigmoid_derivative(output)  # *: element-wise multiplication
+
+        # matrix multiplication between output_delta and the transpose of self.weights_hidden_output
+        error_hidden = output_delta.dot(self.weights_hidden_output.T)
+        hidden_delta = error_hidden * self.sigmoid_derivative(self.hidden_output)
+
+        # Update weights and biases
+        if self.momentum:
+            self.velocity_input_hidden = self.momentum * self.velocity_input_hidden + X.T.dot(hidden_delta) * self.learning_rate
+            self.velocity_hidden_output = self.momentum * self.velocity_hidden_output + self.hidden_output.T.dot(output_delta) * self.learning_rate
+            self.weights_input_hidden += self.velocity_input_hidden
+            self.weights_hidden_output += self.velocity_hidden_output
+        else:
+            self.weights_hidden_output += self.hidden_output.T.dot(output_delta) * self.learning_rate
+            self.weights_input_hidden += X.T.dot(hidden_delta) * self.learning_rate
+
+        self.bias_output += np.sum(output_delta, axis=0, keepdims=True) * self.learning_rate
+        self.bias_hidden += np.sum(hidden_delta, axis=0, keepdims=True) * self.learning_rate
+
+    def train(self, X, y, epochs):
+        for epoch in range(epochs):
+            # Forward pass
+            output = self.forward_pass(X)
+
+            # Backward pass
+            self.backward_pass(X, y, output)
+
+            # Print loss for every 1000 epochs
+            if epoch % 1000 == 0:
+                loss = np.mean(np.square(y - output))
+                print(f'Epoch {epoch}, Loss: {loss:.4f}')
+
+# Example usage without momentum
+if __name__ == "__main__":
+    # Define input data and labels
+    X = np.array([[0], [1]])
+    y = np.array([[0], [1]])
+
+    # Initialize and train the neural network without momentum
+    nn_no_momentum = NeuralNetwork(input_size=1, hidden_size=2, output_size=1, learning_rate=0.1)
+    print("Training without momentum:")
+    nn_no_momentum.train(X, y, epochs=10000)
+
+    # Initialize and train the neural network with momentum
+    nn_with_momentum = NeuralNetwork(input_size=1, hidden_size=2, output_size=1, learning_rate=0.1, momentum=0.9)
+    print("\nTraining with momentum:")
+    nn_with_momentum.train(X, y, epochs=10000)
+\end{lstlisting}
+
+
+\end{multicols*}
+\end{document}

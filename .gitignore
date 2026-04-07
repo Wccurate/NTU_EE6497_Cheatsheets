@@ -1,0 +1,65 @@
+## LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*-blx.bib
+*.lol
+*.mw
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.pdfsync
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.spl
+*.dvi
+*.ps
+*.eps
+main.pdf
+
+## latexmk auxiliary directory
+_latexmk/
+
+## minted and listings outputs
+_minted*
+*.listing
+
+## Mac / editor cruft
+.DS_Store
+*.swp
+*.bak
+
+## Vscode settings
+.vscode/
+*.code-workspace
+
+## History folder (e.g., from local history extensions)
+history/
+.history/
+
+*-SAVE-ERROR
+*.pdf
