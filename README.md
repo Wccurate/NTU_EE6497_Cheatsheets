@@ -33,9 +33,9 @@ This repository hosts the source code for the cheat sheets used in the **AY2025 
 
 | Status | Cheat Sheet | Target Coverage |
 | :---: | :--- | :--- |
-| ✅ | **[`/EE6497_Quiz1_Cheatsheet`](./EE6497_Quiz1_Cheatsheet)** | Fundamental concepts, early-semester topics. |
-| ✅ | **[`/EE6497_Quiz2_Cheatsheet`](./EE6497_Quiz2_Cheatsheet)** | Mid-to-late semester advanced topics. |
-| 🚧 | **`[EE6497_Final_Exam_Cheatsheet]`** | Comprehensive final exam summary *(Work in progress)*. |
+| ✅ | **[`/EE6497_Quiz1_Cheatsheet`](./EE6497_Quiz1_Cheatsheet)** | Probability fundamentals, MLE/MAP, EM, GMM, HMM, Markov Chains. |
+| ✅ | **[`/EE6497_Quiz2_Cheatsheet`](./EE6497_Quiz2_Cheatsheet)** | Neural networks, activation functions, training techniques, CNN basics. |
+| ✅ | **[`/EE6497_Final_Cheatsheet`](./EE6497_Final_Cheatsheet)** | Comprehensive final exam summary: probability, Bayesian inference, mixture models, HMM, MCMC, NNs & CNNs. |
 
 ---
 

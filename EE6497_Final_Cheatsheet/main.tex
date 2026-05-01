@@ -1,0 +1,568 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,top=1pt,bottom=2pt,left=1pt,right=1pt,marginparwidth=1pt,headheight=1pt]{geometry}
+
+\input{preamble.tex}
+
+\usepackage{blindtext}
+\usepackage{multicol}
+\usepackage{color}
+\setlength{\columnsep}{0.2cm}
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{blue}}
+
+\usepackage{xpatch}
+\xpatchcmd{\NCC@ignorepar}{%
+\abovedisplayskip\abovedisplayshortskip}
+{%
+\abovedisplayskip\abovedisplayshortskip%
+\belowdisplayskip\belowdisplayshortskip}
+{}{}
+
+\setlength{\parindent}{0in}
+\setlength{\parskip}{0in}
+
+\setlength{\belowdisplayskip}{0pt} \setlength{\belowdisplayshortskip}{0pt}
+\setlength{\abovedisplayskip}{0pt} \setlength{\abovedisplayshortskip}{0pt}
+
+
+
+\usepackage{soul}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\bulletPoint}[1]{\ul{\textit{\textbf{#1}}}}
+
+
+
+% For better text align
+\usepackage{ragged2e}
+
+
+
+\begin{document}
+\singlespacing
+\begin{multicols*}{4}
+\tiny
+\raggedright
+\bulletPoint{Bernoulli}:
+$X\sim Bern(\theta),\ x\in\{0,1\},\ 0\le\theta\le1$; $p(x|\theta)=\theta$ if $x=1$, $1-\theta$ if $x=0$.
+\useshortskip \begin{equation*}
+    p(x|\theta)=\theta^x(1-\theta)^{1-x}
+\end{equation*}
+$E[X]=\theta,\quad Var(X)=\theta(1-\theta)$.
+$\mathcal{D}=\{x_i\}_{i=1}^n,\ x_i\overset{iid}{\sim}Bern(\theta)$.
+\useshortskip \begin{equation*}
+    \scriptstyle p(\mathcal{D}|\theta)=\theta^{N_1}(1-\theta)^{N_0},\quad
+    N_k=\sum_i\mathbf{1}\{x_i=k\}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \theta_{ML}=\frac{N_1}{N_0+N_1}=\frac{N_1}{n}
+\end{equation*}
+
+\bulletPoint{Uniform}:
+$X\sim Unif(a,b),\ a<b$.
+\useshortskip \begin{equation*}
+    f(x\mid a,b)=
+    \begin{cases}
+        \frac{1}{b-a}, & a\le x\le b\\
+        0, & \text{otherwise}
+    \end{cases}
+\end{equation*}
+\useshortskip \begin{equation*}
+    E[X]=\frac{a+b}{2},\quad Var(X)=\frac{(b-a)^2}{12}
+\end{equation*}
+
+\bulletPoint{Exponential}:
+$X\sim Exp(\lambda),\ \lambda>0$.
+\useshortskip \begin{equation*}
+    f(x\mid\lambda)=
+    \begin{cases}
+        \lambda e^{-\lambda x}, & x\ge0\\
+        0, & \text{otherwise}
+    \end{cases}
+\end{equation*}
+$E[X]=\frac{1}{\lambda},\quad Var(X)=\frac{1}{\lambda^2}$.
+$\mathcal{D}=\{x_i\}_{i=1}^n,\ x_i\overset{iid}{\sim}Exp(\lambda)$.
+\useshortskip \begin{equation*}
+    p(\mathcal{D}|\lambda)=\lambda^n\exp\!\left(-\lambda\sum_{i=1}^n x_i\right)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \lambda_{ML}=\frac{n}{\sum_{i=1}^n x_i}
+\end{equation*}
+% Memoryless: $P(X>s+t\mid X>s)=P(X>t)=e^{-\lambda t}$.
+
+\bulletPoint{Linear Regression}:
+$y=\mathbf{w}^T\mathbf{x}+\epsilon,\ \epsilon\sim\mathcal{N}(0,\sigma^2)$.
+\useshortskip \begin{equation*}
+    p(y|\mathbf{x},\mathbf{w})=\mathcal{N}(y|\mathbf{w}^T\mathbf{x},\sigma^2)
+\end{equation*}
+$\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^n,\ \Phi=[\phi(\mathbf{x}_1)^T;\ldots;\phi(\mathbf{x}_n)^T]$.
+\useshortskip \begin{equation*}
+    \log p(\mathbf{y}|\Phi,\mathbf{w})=-\frac{1}{2\sigma^2}\|\Phi\mathbf{w}-\mathbf{y}\|^2+c
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle =-\frac{1}{2\sigma^2}(\mathbf{w}^T\Phi^T\Phi\mathbf{w}-2\mathbf{y}^T\Phi\mathbf{w})+c
+\end{equation*}
+\useshortskip \begin{equation*}
+    \mathbf{w}_{ML}=\arg\min_{\mathbf{w}}\|\Phi\mathbf{w}-\mathbf{y}\|^2
+\end{equation*}
+\useshortskip \begin{equation*}
+    \Phi^T\Phi\mathbf{w}_{ML}=\Phi^T\mathbf{y},\quad
+    \mathbf{w}_{ML}=(\Phi^T\Phi)^{-1}\Phi^T\mathbf{y}
+\end{equation*}
+Basis: $\phi(\mathbf{x})=[\phi_1,\ldots,\phi_M]^T,\ y=\mathbf{w}^T\phi(\mathbf{x})+\epsilon$.
+
+\bulletPoint{Goodness of Fit}:
+\useshortskip \begin{equation*}
+    RSS=\sum_{i=1}^n(y_i-\hat{y}_i)^2,\quad RMSE=\sqrt{\frac{RSS}{n}}
+\end{equation*}
+\useshortskip \begin{equation*}
+    TSS=\sum_{i=1}^n(y_i-\bar{y})^2,\quad \bar{y}=\frac{1}{n}\sum_i y_i
+\end{equation*}
+\useshortskip \begin{equation*}
+    R^2=1-\frac{RSS}{TSS}=1-\frac{RSS}{\sum_i(y_i-\bar{y})^2}
+\end{equation*}
+$R^2\uparrow$ better; $R^2=0$ constant mean fit; $R^2<0$ worse than mean.
+
+\bulletPoint{MAP Estimate}:
+\useshortskip \begin{equation*}
+    \theta_{MAP}=\arg\max_\theta p(\theta|\mathcal{D})
+\end{equation*}
+\useshortskip \begin{equation*}
+    \log p(\theta|\mathcal{D})=\log p(\mathcal{D}|\theta)+\log p(\theta)+c
+\end{equation*}
+Bern-Beta MAP:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \log p(\mathcal{D},\theta)
+        &=(N_1+a-1)\log\theta\\
+        &\quad+(N_0+b-1)\log(1-\theta)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \theta_{MAP}=\frac{N_1+a-1}{n+a+b-2}
+\end{equation*}
+
+\bulletPoint{Basic Probability Operations}:
+\useshortskip \begin{equation*}
+    X\perp Y \Rightarrow E[XY]=E[X]E[Y]
+\end{equation*}
+\useshortskip \begin{equation*}
+    E[X\mid Y=y]=\int_{-\infty}^{\infty}x\,p(x\mid y)\,dx
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle E[f(X)g(Y)|Y=y]=E[f(X)|Y=y]g(y)
+\end{equation*}
+\useshortskip \begin{equation*}
+    Var(X)=E[(X-E[X])^2]=E[X^2]-E[X]^2
+\end{equation*}
+\useshortskip \begin{equation*}
+    Cov(X,Y)=E[XY]-E[X]E[Y]
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle Var(X+Y)=Var(X)+Var(Y)+2Cov(X,Y)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle Cov(\mathbf{x})=\Sigma_{\mathbf{x}\mathbf{x}}=E[(\mathbf{x}-E\mathbf{x})(\mathbf{x}-E\mathbf{x})^T]
+\end{equation*}
+\useshortskip \begin{equation*}
+    Cov(A\mathbf{x})=A\,Cov(\mathbf{x})A^T
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle Cov(\mathbf{x},\mathbf{y})=\Sigma_{\mathbf{x}\mathbf{y}}=E[(\mathbf{x}-E\mathbf{x})(\mathbf{y}-E\mathbf{y})^T]
+\end{equation*}
+
+\bulletPoint{Matrix Calculus}:
+\useshortskip \begin{equation*}
+    \frac{\partial(\mathbf{a}^T\mathbf{x})}{\partial\mathbf{x}}=\mathbf{a},\quad
+    \frac{\partial(\mathbf{x}^T A\mathbf{x})}{\partial\mathbf{x}}=(A+A^T)\mathbf{x}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{\partial\,\mathbf{a}^T X\mathbf{b}}{\partial X}=\mathbf{a}\mathbf{b}^T
+\end{equation*}
+\useshortskip \begin{equation*}
+    \frac{\partial\det(X)}{\partial X}=\det(X)(X^{-1})^T
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle \frac{\partial\,\mathbf{a}^TX^{-1}\mathbf{b}}{\partial X}=-(X^{-1})^T\mathbf{a}\mathbf{b}^T(X^{-1})^T
+\end{equation*}
+
+\bulletPoint{Bayesian Inference}:
+\useshortskip \begin{equation*}
+    p(\theta|x)=\frac{p(x|\theta)p(\theta)}{p(x)}\propto p(x|\theta)p(\theta)
+\end{equation*}
+\useshortskip \begin{equation*}
+    p(x)=\int p(x|\theta)p(\theta)\,d\theta
+\end{equation*}
+Posterior $\propto$ likelihood $\times$ prior; for MAP ignore $p(x)$.
+Conjugate prior: $p(\theta)$ and $p(\theta|x)$ same family for likelihood $p(x|\theta)$.\\
+Pros: closed form, simple, posterior = updated prior. Cons: less flexible; use MCMC if complex.
+Bern-Beta: $Bern(x|\theta)=\theta^x(1-\theta)^{1-x}$,
+$Beta(\theta|a,b)\propto\theta^{a-1}(1-\theta)^{b-1}$.
+\useshortskip \begin{equation*}
+    p(\theta|x)\propto\theta^{x+a-1}(1-\theta)^{1-x+b-1}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \theta|x\sim Beta(x+a,\ 1-x+b)
+\end{equation*}
+
+\bulletPoint{Beta Prior}:
+$\theta\sim Beta(a,b),\ a,b>0,\ \theta\in[0,1]$.
+\useshortskip \begin{equation*}
+    p(\theta|a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+    \theta^{a-1}(1-\theta)^{b-1}
+\end{equation*}
+% \useshortskip \begin{equation*}
+%     \Gamma(z)=\int_0^\infty u^{z-1}e^{-u}\,du,\quad \int p(\theta)d\theta=1
+% \end{equation*}
+
+\bulletPoint{Gaussian}:
+$X\sim\mathcal{N}(\mu,\sigma^2),\ x\in\mathbb{R},\ \sigma^2>0$.
+\useshortskip \begin{equation*}
+    \mathcal{N}(x|\mu,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}
+    \exp\!\left[-\frac{(x-\mu)^2}{2\sigma^2}\right]
+\end{equation*}
+$E[X]=\mu,\quad Var(X)=\sigma^2$.
+\useshortskip \begin{equation*}
+    X\sim\mathcal{N}(\mu,\sigma^2)\Rightarrow aX\sim\mathcal{N}(a\mu,a^2\sigma^2)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle X+c\sim\mathcal{N}(\mu+c,\sigma^2),\quad X=\sigma Z+\mu,\ Z\sim\mathcal{N}(0,1)
+\end{equation*}
+\useshortskip \begin{equation*}
+    X\perp Y\Rightarrow X+Y\sim\mathcal{N}(\mu+\xi,\sigma^2+\nu^2)
+\end{equation*}
+$\mathcal{D}=\{x_i\}_{i=1}^n,\ x_i\overset{iid}{\sim}\mathcal{N}(\mu,\sigma^2)$.
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle p(\mathcal{D}|\mu,\sigma^2)
+        &=\scriptstyle \frac{1}{(2\pi)^{n/2}\sigma^n}\\
+        &\scriptstyle \quad\exp\!\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2\right]
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Latent Variable and Mixture}:
+$z\in\{1,\ldots,K\},\ z\sim Cat(\pi)$ is latent component index.
+\useshortskip \begin{equation*}
+    \scriptstyle \theta=(\pi,\{\eta_k\}_{k=1}^K),\quad
+    p(z=k)=\pi_k,\quad \sum_k\pi_k=1
+\end{equation*}
+\useshortskip \begin{equation*}
+    p(\mathbf{x}|\theta)=\sum_{k=1}^K p(\mathbf{x},z=k|\theta)
+    =\sum_{k=1}^K \pi_k p(\mathbf{x}|\eta_k)
+\end{equation*}
+GMM:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathbf{x}|\theta)&=\sum_{k=1}^K\pi_k\mathcal{N}(\mathbf{x}|\mu_k,\Sigma_k),\\
+        \theta&=(\pi,\{\mu_k,\Sigma_k\}_{k=1}^K)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle \log p(\mathbf{x}_{1:n}|\theta)=\sum_{i=1}^n
+    \log\sum_{k=1}^K \pi_k p(\mathbf{x}_i|\eta_k)
+\end{equation*}
+Issues: optimization non-convex/local opt.; singularity:
+\useshortskip \begin{equation*}
+    \mu_k=x_i,\ \Sigma_k\to0\Rightarrow \mathcal{N}(x_i|\mu_k,\Sigma_k)\to\infty
+\end{equation*}
+Unidentifiable: label switching
+\useshortskip \begin{equation*}
+    (\pi_1,\mu_1,\Sigma_1)\leftrightarrow(\pi_2,\mu_2,\Sigma_2)
+\end{equation*}
+
+\bulletPoint{EM Algorithm}:
+Init $\theta^{(0)}$; for iteration $m$:
+\useshortskip \begin{equation*}
+    \scriptstyle Q(\theta|\theta^{(m)})=E_{p(\mathbf{y}|\mathbf{x},\theta^{(m)})}
+    [\log p(\mathbf{y}|\theta)]
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle =\int \log p(\mathbf{y}|\theta)\,
+    p(\mathbf{y}|\mathbf{x},\theta^{(m)})d\mathbf{y}
+\end{equation*}
+M-step:
+\useshortskip \begin{equation*}
+    \theta^{(m+1)}=\arg\max_{\theta\in\Theta}Q(\theta|\theta^{(m)})
+\end{equation*}
+Repeat E/M until convergence.
+
+\bulletPoint{GMM EM}:
+Init $\pi_k^{(0)},\mu_k^{(0)},\Sigma_k^{(0)}$.
+\useshortskip \begin{equation*}
+    \scriptstyle L^{(m)}=\frac1n\sum_i\log\sum_k
+    \pi_k^{(m)}\mathcal{N}(\mathbf{x}_i|\mu_k^{(m)},\Sigma_k^{(m)})
+\end{equation*}
+E-step:
+\useshortskip \begin{equation*}
+    \scriptstyle r_{ik}^{(m)}=
+    \frac{\pi_k^{(m)}\mathcal{N}(\mathbf{x}_i|\mu_k^{(m)},\Sigma_k^{(m)})}
+    {\sum_j\pi_j^{(m)}\mathcal{N}(\mathbf{x}_i|\mu_j^{(m)},\Sigma_j^{(m)})}
+\end{equation*}
+\useshortskip \begin{equation*}
+    n_k^{(m)}=\sum_{i=1}^n r_{ik}^{(m)}
+\end{equation*}
+M-step:
+\useshortskip \begin{equation*}
+    \scriptstyle \pi_k^{(m+1)}=\frac{n_k^{(m)}}{n},\quad
+    \mu_k^{(m+1)}=\frac{1}{n_k^{(m)}}\sum_i r_{ik}^{(m)}\mathbf{x}_i
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle \Sigma_k^{(m+1)}
+        &\scriptstyle =\frac{1}{n_k^{(m)}}\sum_i r_{ik}^{(m)}
+        (\mathbf{x}_i-\mu_k^{(m+1)})\\
+        &\scriptstyle \quad(\mathbf{x}_i-\mu_k^{(m+1)})^T
+    \end{split}
+\end{equation*}
+Stop when $|L^{(m+1)}-L^{(m)}|\le\epsilon$.
+
+\bulletPoint{K-Means / Hard EM}:
+GMM special case: $\Sigma_k=\sigma^2I,\ \pi_k=1/K$ fixed; infer $\{\mu_k\}$.
+E-step hard assignment:
+\useshortskip \begin{equation*}
+    \begin{split}
+        k_i&=\arg\min_k\|\mathbf{x}_i-\mu_k^{(m)}\|^2,\\
+        r_{ik}^{(m)}&=\mathbf{1}\{k_i=k\}
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle Q=-\frac{1}{2\sigma^2}\sum_i\|\mathbf{x}_i-\mu_{k_i}\|^2+\mathrm{const}
+\end{equation*}
+M-step center update:
+\useshortskip \begin{equation*}
+    \scriptstyle \mu_k^{(m+1)}=\frac{1}{N_k}\sum_{i:k_i=k}\mathbf{x}_i,\quad
+    N_k=\sum_i\mathbf{1}\{k_i=k\}
+\end{equation*}
+Objective: $\min_{\mu_1,\ldots,\mu_K}\sum_i\|\mathbf{x}_i-\mu_{k_i}\|^2$.
+
+\bulletPoint{Markov Chain MLE}:
+$x_i[t]\in\{1,\ldots,M\},\ \pi(x)=P(x[0]=x),\ T(x,y)=P(x[t]=y|x[t-1]=x)$.
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle \log p(\mathcal{D}|\pi,T)
+        &\scriptstyle =\sum_x N_x\log\pi(x)\\
+        &\scriptstyle \quad+\sum_x\sum_y N_{xy}\log T(x,y)
+    \end{split}
+\end{equation*}
+\useshortskip \begin{equation*}
+    N_x=\sum_{i=1}^n\mathbf{1}\{x_i[0]=x\}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle N_{xy}=\sum_i\sum_{t=1}^{t_i}
+    \mathbf{1}\{x_i[t-1]=x,x_i[t]=y\}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \hat{\pi}(x)=\frac{N_x}{n},\qquad
+    \hat{T}(x,y)=\frac{N_{xy}}{\sum_{z=1}^M N_{xz}}
+\end{equation*}
+
+\bulletPoint{Hidden Markov Model (HMM)}:
+Latent Markov chain $z[t]\in\{1,\ldots,M\}$ with initial pdf $\pi$ and transition $T$.
+\useshortskip \begin{equation*}
+    \begin{split}
+        \pi(z)&=P(z[0]=z),\\
+        T(i,j)&=P(z[t]=j|z[t-1]=i)
+    \end{split}
+\end{equation*}
+Emission model:
+\useshortskip \begin{equation*}
+    \begin{split}
+        p(\mathbf{x}[t]|z[t]=k)&=p(\mathbf{x}[t]|\phi_k),\\
+        \phi&=(\phi_1,\ldots,\phi_M)
+    \end{split}
+\end{equation*}
+Parameters: $\theta=(\pi,T,\phi)$; observations $\mathbf{x}[t]$, hidden states $z[t]$.
+If $z_i[0:t_i]$ observed:
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle \log p(\mathcal{D}|\theta)
+        &\scriptstyle =\sum_i\log\pi(z_i[0])\\
+        &\scriptstyle \quad+\sum_i\sum_{t=1}^{t_i}
+        \log T(z_i[t-1],z_i[t])\\
+        &\scriptstyle \quad+\sum_i\sum_{t=0}^{t_i}
+        \log p(\mathbf{x}_i[t]|\phi_{z_i[t]})
+    \end{split}
+\end{equation*}
+
+\bulletPoint{Baum-Welch (HMM EM)}:
+Init $\theta^{(0)}$; E-step via Forward-Backward:
+\useshortskip \begin{equation*}
+    \alpha_{i,t}(z)=p(z_i[t]=z|\mathbf{x}_i[0:t])
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle \beta_{i,t}(z)=p(\mathbf{x}_i[t+1:t_i]|z_i[t]=z)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \scriptstyle \gamma_{i,t}(z)=
+    \frac{\alpha_{i,t}(z)\beta_{i,t}(z)}
+    {\sum_{z'}\alpha_{i,t}(z')\beta_{i,t}(z')}
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle \xi_{i,t}(z,z')
+        &\scriptstyle =p(z_{t-1}=z,z_t=z'|\mathbf{x}_i)\\
+        &\scriptstyle \propto \alpha_{i,t-1}(z)T(z,z')
+        p(\mathbf{x}_i[t]|\phi_{z'})\beta_{i,t}(z')
+    \end{split}
+\end{equation*}
+M-step:
+\useshortskip \begin{equation*}
+    \hat{\pi}(z)=\frac{1}{n}\sum_i\gamma_{i,0}(z)
+\end{equation*}
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle \hat{T}(z,z')
+        &\scriptstyle =
+        \frac{\sum_i\sum_{t=1}^{t_i}\xi_{i,t}(z,z')}
+        {\sum_u\sum_i\sum_{t=1}^{t_i}\xi_{i,t}(z,u)}
+    \end{split}
+\end{equation*}
+$\hat{\phi}_z$: weighted emission MLE using weights $\gamma_{i,t}(z)$. Repeat E/M.
+
+\bulletPoint{HMM Inference}:
+Given observations, infer latent states.
+Filtering(Forward): infer current $z[t]$ from $\mathbf{x}[0:t]$.
+Smoothing(Forward-Backward): infer past $z[t]$ from full $\mathbf{x}[0:T]$.
+Prediction(Forward-Backward): infer future state $z[t+h]$ from $\mathbf{x}[0:t]$.
+\useshortskip \begin{equation*}
+    p_{t+h}=p_tT^h,\quad p_t=p(z[t]|\mathbf{x}[0:t])
+\end{equation*}
+Future observation: predict $\mathbf{x}[t+h]$ by summing hidden states.
+\useshortskip \begin{equation*}
+    \begin{split}
+        \scriptstyle p(\mathbf{x}[t+h]|\mathbf{x}[0:t])
+        &\scriptstyle =\sum_z p(\mathbf{x}[t+h]|z)\\
+        &\scriptstyle \quad p(z[t+h]|\mathbf{x}[0:t])
+    \end{split}
+\end{equation*}
+MAP path / Viterbi: find most likely hidden sequence.
+\useshortskip \begin{equation*}
+    z^*[0:T]=\arg\max_{z[0:T]}p(z[0:T]|\mathbf{x}[0:T])
+\end{equation*}
+
+\bulletPoint{CDF Sampling}:
+To sample from CDF $F$: draw $U\sim Unif(0,1)$, then transform by inverse CDF.
+\useshortskip \begin{equation*}
+    X=F^{-1}(U)\sim F
+\end{equation*}
+\useshortskip \begin{equation*}
+    F^{-1}(u)=\inf\{x:F(x)\ge u\}
+\end{equation*}
+Transform pdf: if $Y=f(X)$, sum over roots $x_k:f(x_k)=y$.
+\useshortskip \begin{equation*}
+    p_Y(y)=\sum_{k=1}^K \frac{p_X(x_k)}{|f'(x_k)|}
+\end{equation*}
+Complex dist.: decompose into simple ones if possible.
+Gamma integer shape:
+\useshortskip \begin{equation*}
+    Y\sim Gamma(a,b),\quad a\in\mathbb{Z}_+
+\end{equation*}
+\useshortskip \begin{equation*}
+    Y=\sum_{i=1}^a X_i,\qquad X_i\overset{iid}{\sim}Exp(b)
+\end{equation*}
+
+\bulletPoint{Rejection Sampling}:
+Sample target known up to constant: $p(z)=\frac{1}{M}\tilde{p}(z)$, $M$ unknown.
+Choose proposal $q(z)$ easy to sample and envelope $kq(z)$:
+\useshortskip \begin{equation*}
+    kq(z)\ge \tilde{p}(z)\quad \forall z,\qquad supp\,p\subset supp\,q
+\end{equation*}
+Algorithm: sample $z\sim q(\cdot)$, $u\sim Unif[0,kq(z)]$; accept if $u\le\tilde{p}(z)$.
+\useshortskip \begin{equation*}
+    P(\text{accept})=\frac{M}{k}
+\end{equation*}
+Bayesian posterior often only known up to evidence:
+\useshortskip \begin{equation*}
+    p(\theta|\mathcal{D})\propto \tilde{p}(\theta)=p(\mathcal{D}|\theta)p(\theta)
+\end{equation*}
+If choose $q(\theta)=p(\theta)$:
+\useshortskip \begin{equation*}
+    k=\max_\theta \frac{\tilde{p}(\theta)}{q(\theta)}
+    =\max_\theta p(\mathcal{D}|\theta)
+\end{equation*}
+$k$ corresponds to MLE of $\theta$.
+
+\bulletPoint{Importance Sampling}:
+Target $p(z)$ hard to sample; proposal $q(z)$ easy. For $z_i\overset{iid}{\sim}q$:
+\useshortskip \begin{equation*}
+    E_p[f(z)]=\int f(z)\frac{p(z)}{q(z)}q(z)dz
+\end{equation*}
+Need support coverage:
+\useshortskip \begin{equation*}
+    supp\{f(\cdot)p(\cdot)\}\subset supp\,q
+\end{equation*}
+\useshortskip \begin{equation*}
+    w(z)=\frac{p(z)}{q(z)}
+\end{equation*}
+\useshortskip \begin{equation*}
+    E_p[f(z)]\approx\frac{1}{n}\sum_{i=1}^n w(z_i)f(z_i)
+\end{equation*}
+If $p,q$ only known up to constants, use normalized weights:
+\useshortskip \begin{equation*}
+    w_n(z_i)=\frac{w(z_i)}{\sum_{j=1}^n w(z_j)}
+\end{equation*}
+\useshortskip \begin{equation*}
+    E_p[f(z)]\approx\sum_{i=1}^n w_n(z_i)f(z_i)
+\end{equation*}
+
+\bulletPoint{SIR}:
+Sampling-Importance-Resampling: convert weighted IS samples to unweighted samples from $p(z)$.
+Steps: sample $z_i\sim q(z)$; compute normalized weights $w_n(z_i)$; resample with replacement by weights.
+\useshortskip \begin{equation*}
+    P(z^*=z_i)=w_n(z_i),\qquad i=1,\ldots,n
+\end{equation*}
+Bayes SIR: want samples from posterior $p(\theta|\mathcal{D})$.
+\useshortskip \begin{equation*}
+    p(\theta|\mathcal{D})=\frac{p(\mathcal{D}|\theta)p(\theta)}{p(\mathcal{D})}
+\end{equation*}
+Take $\tilde{p}(\theta)=p(\mathcal{D}|\theta)p(\theta)$ and proposal $q(\theta)=p(\theta)$.
+\useshortskip \begin{equation*}
+    \scriptstyle w_n(\theta_i)=
+    \frac{\tilde{p}(\theta_i)/q(\theta_i)}
+    {\sum_j \tilde{p}(\theta_j)/q(\theta_j)}
+    =\frac{p(\mathcal{D}|\theta_i)}
+    {\sum_j p(\mathcal{D}|\theta_j)}
+\end{equation*}
+Resample $\theta_1,\ldots,\theta_n$ according to $w_n(\theta_i)$.
+
+\bulletPoint{MCMC}:
+For high-dimensional target pdf $\pi(x)$ where direct/rejection/IS sampling is hard.
+Idea: construct Markov chain $Z_0,Z_1,\ldots$ whose stationary distribution is $\pi$.
+\useshortskip \begin{equation*}
+    Z_n \xrightarrow[n\to\infty]{d} \pi(\cdot)
+\end{equation*}
+Then after burn-in, samples $Z_B,Z_{B+1},\ldots$ are approximate samples from $\pi$.
+Stationary distribution iff for all states $y$:
+\useshortskip \begin{equation*}
+    \sum_x \pi(x)T(x,y)=\pi(y)
+\end{equation*}
+Matrix form:
+\useshortskip \begin{equation*}
+    \pi T=\pi
+\end{equation*}
+Detailed balance (sufficient, not necessary):
+\useshortskip \begin{equation*}
+    \pi(x)T(x,y)=\pi(y)T(y,x)
+\end{equation*}
+To sample from $\pi(x)$: design $T(x,y)$ satisfying ergodicity, usually reversible and aperiodic, with stationary distribution $\pi$.
+History: Metropolis-Hastings, Gibbs sampling.
+
+\bulletPoint{Metropolis-Hastings}:
+Want sample from target $\pi(x)$; only need unnormalized $\tilde{\pi}(x)\propto\pi(x)$.
+Choose proposal $q(x,y)$ easy to sample, irreducible and aperiodic.
+At step $m$: set $x=Z_{m-1}$, propose $y\sim q(x,\cdot)$.
+\useshortskip \begin{equation*}
+    A(x,y)=\min\!\left(1,\frac{\tilde{\pi}(y)q(y,x)}
+    {\tilde{\pi}(x)q(x,y)}\right)
+\end{equation*}
+Accept with prob. $A(x,y)$:
+\useshortskip \begin{equation*}
+    Z_m=
+    \begin{cases}
+        y, & \text{accept}\\
+        x, & \text{reject}
+    \end{cases}
+\end{equation*}
+Then $\pi$ is stationary distribution of the chain.
+
+\end{multicols*}
+\end{document}
